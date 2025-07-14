@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import CreateProfile from "../modals/CreateProfile";
+import Profiles from "../modals/Profiles";
 
 function Header() {
     return (
@@ -6,24 +8,18 @@ function Header() {
             <ul
                 style={{
                     display: "flex",
-                    gap: "50px",
+                    gap: "30px",
                     fontSize: "30px",
                 }}
             >
                 <Link style={{ textDecoration: "none", color: "black" }} to="/">
-                    Home
+                    CheckList
                 </Link>
-                <Link
-                    style={{ textDecoration: "none", color: "black" }}
-                    to="/admins"
-                >
-                    Admins
+                <Link>
+                    <Profiles />
                 </Link>
-                <Link
-                    style={{ textDecoration: "none", color: "black" }}
-                    to="/users"
-                >
-                    Users
+                <Link>
+                    <CreateProfile />
                 </Link>
             </ul>
         </div>

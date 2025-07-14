@@ -1,9 +1,8 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Header from "./components/Header";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Header from "./components/_partials/Header";
 import Home from "./pages/Home";
-import Admins from "./pages/Admins";
-import Users from "./pages/Users";
 
 function App() {
     return (
@@ -11,8 +10,6 @@ function App() {
             <Header />
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/admins" element={<Admins />} />
-                <Route path="/users" element={<Users />} />
             </Routes>
         </div>
     );
