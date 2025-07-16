@@ -40,12 +40,7 @@ app.post("/profile-create", async (req, res) => {
         const new_profile = await Profile.create_profile(req.body);
 
         if (new_profile[0].affectedRows > 0) {
-            const newDataId = result[0].insertId;
-            const newData = await Profile.getById(newDataId);
-
-            res.status(200).json({
-                newData: newData[0][0],
-            });
+            res.status(200).json({ message: "Profile created successfully." });
         } else {
             res.status(404).json({ message: "Not found." });
         }

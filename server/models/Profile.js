@@ -8,7 +8,10 @@ module.exports = class Profile {
         return connection.execute(`SELECT *  FROM profile  WHERE id = ?`, [id]);
     }
     static create_profile(condition) {
-        const { domain_name, google_account, email } = condition;
+        let { domain_name, google_account, email } = condition;
+        domain_name = domain_name ? domain_name : "-";
+        google_account = google_account ? google_account : "-";
+        email = email ? email : "-";
         return connection.execute(
             `
             INSERT INTO profile (domain_name, google_account, email) 
@@ -18,10 +21,10 @@ module.exports = class Profile {
         );
     }
     static update_profile(condition) {
-        const { domain_name, google_account, email, id } = condition;
-        domain_name = domain_name ? domain_name : null;
-        google_account = google_account ? google_account : null;
-        email = email ? email : null;
+        let { domain_name, google_account, email, id } = condition;
+        domain_name = domain_name ? domain_name : "-";
+        google_account = google_account ? google_account : "-";
+        email = email ? email : "-";
         return connection.execute(
             `
             UPDATE profile 
