@@ -1,42 +1,33 @@
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import axios from "axios";
-import { FaCheck, FaEdit, FaUser } from "react-icons/fa";
+import { FaCheck, FaEdit } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
-function Profiles({ isNewProfile, setCreateNewProfile }) {
+import { MdGroups } from "react-icons/md";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    deleteProfile,
+    getAllProfile,
+    updateProfile,
+} from "../../redux/features/profile/profileSlice";
+
+function Profiles() {
     console.log("Profiles worked.");
+    const { profiles } = useSelector((state) => state.profile);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getAllProfile());
+    }, [dispatch]);
+
     const [show, setShow] = useState(false);
-    const [profiles, setProfiles] = useState([]);
+    const handleShow = () => setShow(true);
     const [newData, setNewData] = useState({
         id: "",
         domain_name: "",
         google_account: "",
         email: "",
     });
-
-    const getData = async () => {
-        try {
-            const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}/profile-getall`
-            );
-            setProfiles(response.data.profiles);
-        } catch (error) {
-            console.error("Veri çekme hatası:", error);
-        }
-    };
-    useEffect(() => {
-        getData();
-    }, []);
-
-    useEffect(() => {
-        if (isNewProfile) {
-            getData();
-            setCreateNewProfile(false);
-        }
-    }, [isNewProfile]);
-
-    const handleShow = () => setShow(true);
     const handleClose = () => {
         setShow(false);
         setNewData({
@@ -46,17 +37,13 @@ function Profiles({ isNewProfile, setCreateNewProfile }) {
             email: "",
         });
     };
-    const handleUpdate = async (id) => {
+    const handleUpdate = async () => {
         const result = window.confirm(
             `Bu profili güncellemek istiyor musunuz?`
         );
         if (result) {
             try {
-                await axios.post(
-                    `${import.meta.env.VITE_API_URL}/profile-update`,
-                    { ...newData, id }
-                );
-                getData();
+                dispatch(updateProfile(newData));
             } catch (error) {
                 console.error(`Sistem Mesajı!: ${error}`);
             }
@@ -68,27 +55,24 @@ function Profiles({ isNewProfile, setCreateNewProfile }) {
             email: "",
         });
     };
-
     const handleDelete = (id) => {
         const result = window.confirm(
             `Bu profili silmek istiyor musunuz? ID: ${id}`
         );
         if (result) {
             try {
-                axios.get(
-                    `${import.meta.env.VITE_API_URL}/profile-delete/${id}`
-                );
-                getData();
+                dispatch(deleteProfile(id));
             } catch (error) {
                 console.error(`Sistem Mesajı!: ${error}`);
             }
         }
     };
+
     return (
         <>
             <Button variant="primary btn-lg" onClick={handleShow}>
                 <div className="d-flex align-items-center">
-                    <FaUser />
+                    <MdGroups size={30} />
                     <span className="ms-2">Profiller</span>
                 </div>
             </Button>
@@ -194,7 +178,18 @@ function Profiles({ isNewProfile, setCreateNewProfile }) {
                                         </tr>
                                     ) : (
                                         <tr key={profile.id}>
-                                            <td>{profile.domain_name}</td>
+                                            <td>
+                                                <Link
+                                                    to={`/profile/${profile.id}`}
+                                                    style={{
+                                                        textDecoration: "none",
+                                                        color: "black",
+                                                    }}
+                                                    onClick={handleClose}
+                                                >
+                                                    {profile.domain_name}
+                                                </Link>
+                                            </td>
                                             <td>{profile.google_account}</td>
                                             <td>{profile.email}</td>
                                             <td className="text-center">

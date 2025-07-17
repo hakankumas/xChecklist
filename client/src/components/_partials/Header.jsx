@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import CreateProfile from "../modals/CreateProfile";
 import Profiles from "../modals/Profiles";
-import { useState } from "react";
+import GetAllProfiles from "./GetAllProfiles";
 
 function Header() {
-    const [isNewProfile, setCreateNewProfile] = useState(false);
     return (
         <div className="my-3">
             <ul
@@ -18,15 +17,14 @@ function Header() {
                     CheckList
                 </Link>
                 <Link>
-                    <Profiles
-                        isNewProfile={isNewProfile}
-                        setCreateNewProfile={setCreateNewProfile}
-                    />
+                    <Profiles />
                 </Link>
                 <Link>
-                    <CreateProfile setCreateNewProfile={setCreateNewProfile} />
+                    <CreateProfile />
                 </Link>
+                <GetAllProfiles />
             </ul>
+            <hr />
         </div>
     );
 }

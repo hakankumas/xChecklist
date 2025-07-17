@@ -2,9 +2,18 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FaUserPlus } from "react-icons/fa";
-import axios from "axios";
-function CreateProfile({ setCreateNewProfile }) {
+import { useDispatch } from "react-redux";
+import { createProfile } from "../../redux/features/profile/profileSlice";
+
+function CreateProfile() {
+    console.log("CreateProfile is worked.");
+    const dispatch = useDispatch();
     const [show, setShow] = useState(false);
+    const [newData, setNewData] = useState({
+        domain_name: "",
+        google_account: "",
+        email: "",
+    });
     const handleShow = () => setShow(true);
     const handleClose = () => {
         setShow(false);
@@ -14,33 +23,22 @@ function CreateProfile({ setCreateNewProfile }) {
             email: "",
         });
     };
-
-    const [newData, setNewData] = useState({
-        domain_name: "",
-        google_account: "",
-        email: "",
-    });
-    const handleUpdate = async () => {
-        if (newData.domain_name !== "") {
+    const handleCreate = () => {
+        if (newData.domain_name.trim() !== "") {
             try {
-                await axios.post(
-                    `${import.meta.env.VITE_API_URL}/profile-create`,
-                    newData
-                );
+                dispatch(createProfile(newData));
                 handleClose();
-                setCreateNewProfile(true);
             } catch (error) {
                 console.error(error);
             }
         }
-        return;
     };
 
     return (
         <>
             <Button variant="success btn-lg" onClick={handleShow}>
                 <div className="d-flex align-items-center">
-                    <FaUserPlus />
+                    <FaUserPlus size={30} />
                     <span className="ms-2">Yeni Profil</span>
                 </div>
             </Button>
@@ -96,8 +94,8 @@ function CreateProfile({ setCreateNewProfile }) {
                 <Modal.Footer>
                     <Button
                         variant="success"
-                        onClick={() => handleUpdate()}
-                        disabled={!newData.domain_name}
+                        onClick={handleCreate}
+                        disabled={!newData.domain_name.trim()}
                     >
                         Tamam
                     </Button>
