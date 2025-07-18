@@ -39,13 +39,12 @@ function CreateProfile() {
             <Button variant="success btn-lg" onClick={handleShow}>
                 <div className="d-flex align-items-center">
                     <FaUserPlus size={30} />
-                    <span className="ms-2">Yeni Profil</span>
                 </div>
             </Button>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Yeni Profil</Modal.Title>
+                    <Modal.Title>Yeni Profil Oluştur</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="mb-3">

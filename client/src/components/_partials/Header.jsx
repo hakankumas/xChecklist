@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 import CreateProfile from "../modals/CreateProfile";
-import Profiles from "../modals/Profiles";
-import GetAllProfiles from "./GetAllProfiles";
 
 function Header() {
     return (
@@ -17,12 +15,8 @@ function Header() {
                     CheckList
                 </Link>
                 <Link>
-                    <Profiles />
-                </Link>
-                <Link>
                     <CreateProfile />
                 </Link>
-                <GetAllProfiles />
             </ul>
             <hr />
         </div>

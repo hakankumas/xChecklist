@@ -1,5 +1,188 @@
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import {
+    getProfile,
+    updateProfileStepNo,
+} from "../redux/features/profile/profileSlice";
+import { FaRegCheckCircle, FaRegEnvelope } from "react-icons/fa";
+import {
+    FaRegArrowAltCircleRight,
+    FaRegArrowAltCircleLeft,
+} from "react-icons/fa";
 function Profile() {
-    return <div>Profile</div>;
+    console.log("Profile is worked.");
+    const dispatch = useDispatch();
+    const { id } = useParams();
+    const { selected_profile } = useSelector((state) => state.profile);
+
+    useEffect(() => {
+        dispatch(getProfile(id));
+    }, [id, dispatch]);
+
+    const handleReport = (step_id) => {
+        console.log(`handleReport ${step_id}`);
+    };
+    const handleProcess = (id, step_id) => {
+        const condition = {
+            id,
+            step_no: step_id,
+        };
+        dispatch(updateProfileStepNo(condition));
+        dispatch(getProfile(id));
+    };
+    const stepTexts = {
+        0: "Analizi Başlat",
+        1: "Ön Analiz",
+        2: "Detaylı Analiz",
+        3: "Analiz Tamamlandı",
+    };
+    return (
+        <div
+            className="px-5 py-3 shadow rounded-4"
+            style={{ width: "max-content", maxWidth: "500px" }}
+        >
+            {selected_profile.length > 0 ? (
+                <>
+                    <div
+                        className="card shadow p-3 my-3"
+                        style={{
+                            width: "max-content",
+                            maxWidth: "450px",
+                        }}
+                    >
+                        <div className="card-body">
+                            <h5 className="card-title text-center fs-3 mb-3">
+                                Profil Bilgileri
+                            </h5>
+                            <p className="card-text mb-2">
+                                <span>Domain Adı: </span>
+                                <strong>
+                                    {selected_profile[0].domain_name}
+                                </strong>
+                            </p>
+                            <p className="card-text mb-2">
+                                <span>Google Hesabı: </span>
+                                <strong>
+                                    {selected_profile[0].google_account}
+                                </strong>
+                            </p>
+                            <p className="card-text mb-2">
+                                <span>Email: </span>
+                                <strong>{selected_profile[0].email}</strong>
+                            </p>
+                        </div>
+                        <hr className="m-0 mb-3" />
+                        <div className="text-danger text-center fnt-italic fw-bold fs-5">
+                            {stepTexts[selected_profile[0]?.step_no] ||
+                                "Bilinmeyen Adım"}
+                        </div>
+                    </div>
+                    {selected_profile[0].step_no === 0 && (
+                        <div className="my-3 d-flex justify-content-end">
+                            <button
+                                className="btn btn-lg btn-secondary"
+                                title="İleri"
+                                onClick={() =>
+                                    handleProcess(selected_profile[0].id, 1)
+                                }
+                            >
+                                <FaRegArrowAltCircleRight size={30} />
+                            </button>
+                        </div>
+                    )}
+                    {selected_profile[0].step_no === 1 && (
+                        <div className="my-3 d-flex flex-row justify-content-between gap-3">
+                            <div>
+                                <button
+                                    className="btn btn-lg btn-danger"
+                                    title="Rapor Gönder"
+                                    onClick={handleReport(1)}
+                                >
+                                    <FaRegEnvelope size={30} />
+                                </button>
+                            </div>
+                            <div className="d-flex flex-row gap-3">
+                                <button
+                                    className="btn btn-lg btn-secondary"
+                                    title="Geri"
+                                    onClick={() =>
+                                        handleProcess(selected_profile[0].id, 0)
+                                    }
+                                >
+                                    <FaRegArrowAltCircleLeft size={30} />
+                                </button>
+                                <button
+                                    className="btn btn-lg btn-secondary"
+                                    title="İleri"
+                                    onClick={() =>
+                                        handleProcess(selected_profile[0].id, 2)
+                                    }
+                                >
+                                    <FaRegArrowAltCircleRight size={30} />
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                    {selected_profile[0].step_no === 2 && (
+                        <div className="my-3 d-flex flex-row justify-content-between gap-3">
+                            <div>
+                                <button
+                                    className="btn btn-lg btn-danger"
+                                    onClick={handleReport(2)}
+                                    title="Rapor Gönder"
+                                >
+                                    <FaRegEnvelope size={30} />
+                                </button>
+                            </div>
+                            <div className="d-flex flex-row gap-3">
+                                <button
+                                    className="btn btn-lg btn-secondary"
+                                    title="Geri"
+                                    onClick={() =>
+                                        handleProcess(selected_profile[0].id, 1)
+                                    }
+                                >
+                                    <FaRegArrowAltCircleLeft size={30} />
+                                </button>
+                                <button
+                                    className="btn btn-lg btn-primary"
+                                    title="Tamamla"
+                                    onClick={() =>
+                                        handleProcess(selected_profile[0].id, 3)
+                                    }
+                                >
+                                    <FaRegCheckCircle size={30} />
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                    {selected_profile[0].step_no === 3 && (
+                        <div className="my-3 d-flex flex-row justify-content-between gap-3">
+                            <button
+                                className="btn btn-lg btn-danger"
+                                title="Yeniden Rapor Gönder"
+                                onClick={handleReport(2)}
+                            >
+                                <FaRegEnvelope size={30} />
+                            </button>
+                            <button
+                                className="btn btn-lg btn-secondary"
+                                title="Geri"
+                                onClick={() =>
+                                    handleProcess(selected_profile[0].id, 2)
+                                }
+                            >
+                                <FaRegArrowAltCircleLeft size={30} />
+                            </button>
+                        </div>
+                    )}
+                </>
+            ) : (
+                <p>Profil bilgileri yükleniyor...</p>
+            )}
+        </div>
+    );
 }
 
 export default Profile;
