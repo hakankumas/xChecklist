@@ -155,8 +155,27 @@ app.post("/question/create", async (req, res) => {
 
 app.post("/question/update", async (req, res) => {
     try {
-        const updated_question = await Question.update_question(req.body);
+        const updated_question = await Question.update_question_name(req.body);
         if (updated_question[0].affectedRows > 0) {
+            const selected_question = await Question.getById(req.body.id);
+            res.status(200).json({
+                question: selected_question[0][0],
+                message: "Question updated successfully.",
+            });
+        } else {
+            res.status(404).json({ message: "Not found." });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
+
+app.post("/question/update/rank", async (req, res) => {
+    try {
+        const updated_question_rank = await Question.update_question_rank(
+            req.body
+        );
+        if (updated_question_rank[0].affectedRows > 0) {
             const selected_question = await Question.getById(req.body.id);
             res.status(200).json({
                 question: selected_question[0][0],

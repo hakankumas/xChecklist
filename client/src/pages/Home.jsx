@@ -9,6 +9,7 @@ import {
     getAllProfile,
     updateProfile,
 } from "../redux/features/profile/profileSlice";
+import SelectRank from "../components/SelectRank";
 
 function Home() {
     console.log("Home worked.");
@@ -57,135 +58,149 @@ function Home() {
     };
 
     return (
-        <>
-            <table className="table table-striped___ table-hover">
-                <thead style={{ border: "1px solid black" }}>
-                    <tr>
-                        <th style={{ width: "30%" }}>Domain Adresi</th>
-                        <th style={{ width: "25%" }}>Google Hesabı</th>
-                        <th style={{ width: "25%" }}>Email</th>
-                        <th style={{ width: "10%" }} className="text-center">
-                            Düzenle
-                        </th>
-                        <th style={{ width: "10%" }} className="text-center">
-                            Sil
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {profiles &&
-                        profiles.map((profile) =>
-                            newData && newData.id === profile.id ? (
-                                <tr key={newData.id}>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={newData.domain_name}
-                                            onChange={(e) =>
-                                                setNewData({
-                                                    ...newData,
-                                                    domain_name: e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={newData.google_account}
-                                            onChange={(e) =>
-                                                setNewData({
-                                                    ...newData,
-                                                    google_account:
-                                                        e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="email"
-                                            className="form-control"
-                                            value={newData.email}
-                                            onChange={(e) =>
-                                                setNewData({
-                                                    ...newData,
-                                                    email: e.target.value,
-                                                })
-                                            }
-                                        />
-                                    </td>
-                                    <td className="text-center">
-                                        <FaCheck
-                                            className="text-success"
-                                            style={{
-                                                cursor: "pointer",
-                                            }}
-                                            size={20}
-                                            onClick={() =>
-                                                handleUpdate(newData.id)
-                                            }
-                                        />
-                                    </td>
-                                    <td className="text-center">
-                                        <FaRegTrashAlt
-                                            className="text-danger"
-                                            size={20}
-                                            style={{
-                                                cursor: "pointer",
-                                            }}
-                                            onClick={() =>
-                                                handleDelete(newData.id)
-                                            }
-                                        />
-                                    </td>
-                                </tr>
-                            ) : (
-                                <tr key={profile.id}>
-                                    <td>
-                                        <Link
-                                            to={`/profile/${profile.id}`}
-                                            style={{
-                                                textDecoration: "none",
-                                                color: "black",
-                                            }}
-                                            className="domain_name"
-                                        >
-                                            {profile.domain_name}
-                                        </Link>
-                                    </td>
-                                    <td>{profile.google_account}</td>
-                                    <td>{profile.email}</td>
-                                    <td className="text-center">
-                                        <FaEdit
-                                            className="text-primary"
-                                            size={20}
-                                            style={{
-                                                cursor: "pointer",
-                                            }}
-                                            onClick={() => setNewData(profile)}
-                                        />
-                                    </td>
-                                    <td className="text-center">
-                                        <FaRegTrashAlt
-                                            className="text-danger"
-                                            size={20}
-                                            style={{
-                                                cursor: "pointer",
-                                            }}
-                                            onClick={() =>
-                                                handleDelete(profile.id)
-                                            }
-                                        />
-                                    </td>
-                                </tr>
-                            )
-                        )}
-                </tbody>
-            </table>
-        </>
+        <div className="row">
+            <div className="col-6 pe-4">
+                <table className="table table-striped___ table-hover">
+                    <thead style={{ border: "1px solid black" }}>
+                        <tr>
+                            <th style={{ width: "30%" }}>Domain Adresi</th>
+                            <th style={{ width: "25%" }}>Google Hesabı</th>
+                            <th style={{ width: "25%" }}>Email</th>
+                            <th
+                                style={{ width: "10%" }}
+                                className="text-center"
+                            >
+                                Düzenle
+                            </th>
+                            <th
+                                style={{ width: "10%" }}
+                                className="text-center"
+                            >
+                                Sil
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {profiles &&
+                            profiles.map((profile) =>
+                                newData && newData.id === profile.id ? (
+                                    <tr key={newData.id}>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                value={newData.domain_name}
+                                                onChange={(e) =>
+                                                    setNewData({
+                                                        ...newData,
+                                                        domain_name:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                value={newData.google_account}
+                                                onChange={(e) =>
+                                                    setNewData({
+                                                        ...newData,
+                                                        google_account:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="email"
+                                                className="form-control"
+                                                value={newData.email}
+                                                onChange={(e) =>
+                                                    setNewData({
+                                                        ...newData,
+                                                        email: e.target.value,
+                                                    })
+                                                }
+                                            />
+                                        </td>
+                                        <td className="text-center">
+                                            <FaCheck
+                                                className="text-success"
+                                                style={{
+                                                    cursor: "pointer",
+                                                }}
+                                                size={20}
+                                                onClick={() =>
+                                                    handleUpdate(newData.id)
+                                                }
+                                            />
+                                        </td>
+                                        <td className="text-center">
+                                            <FaRegTrashAlt
+                                                className="text-danger"
+                                                size={20}
+                                                style={{
+                                                    cursor: "pointer",
+                                                }}
+                                                onClick={() =>
+                                                    handleDelete(newData.id)
+                                                }
+                                            />
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    <tr key={profile.id}>
+                                        <td>
+                                            <Link
+                                                to={`/profile/${profile.id}`}
+                                                style={{
+                                                    textDecoration: "none",
+                                                    color: "black",
+                                                }}
+                                                className="domain_name"
+                                            >
+                                                {profile.domain_name}
+                                            </Link>
+                                        </td>
+                                        <td>{profile.google_account}</td>
+                                        <td>{profile.email}</td>
+                                        <td className="text-center">
+                                            <FaEdit
+                                                className="text-primary"
+                                                size={20}
+                                                style={{
+                                                    cursor: "pointer",
+                                                }}
+                                                onClick={() =>
+                                                    setNewData(profile)
+                                                }
+                                            />
+                                        </td>
+                                        <td className="text-center">
+                                            <FaRegTrashAlt
+                                                className="text-danger"
+                                                size={20}
+                                                style={{
+                                                    cursor: "pointer",
+                                                }}
+                                                onClick={() =>
+                                                    handleDelete(profile.id)
+                                                }
+                                            />
+                                        </td>
+                                    </tr>
+                                )
+                            )}
+                    </tbody>
+                </table>
+            </div>
+            <div className="col-6 ps-4">
+                <SelectRank />
+            </div>
+        </div>
     );
 }
 
