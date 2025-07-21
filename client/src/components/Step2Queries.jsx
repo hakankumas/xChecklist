@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-function Step2Queries() {
+function Step2Queries({ id }) {
     console.log("Step2Queries rendered.");
     const [questions, setQuestions] = useState([]);
     const handleData = async () => {
@@ -24,7 +24,7 @@ function Step2Queries() {
                 questions.map((question) => (
                     <div
                         key={question.id}
-                        className="card q-select px-3 pt-3"
+                        className="border q-select px-3 pt-3"
                         title="Ekle"
                     >
                         <p>{question.name}</p>

@@ -24,7 +24,7 @@ function Step2QueriesSelected({ id }) {
                 selected_questions.map((question) => (
                     <div
                         key={question.id}
-                        className="card q-unselect px-3 pt-3"
+                        className="border q-unselect px-3 pt-3"
                         title="Kaldır"
                     >
                         <p>{question.question_name}</p>

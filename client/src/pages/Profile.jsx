@@ -205,7 +205,7 @@ function Profile() {
             )}
             {selected_profile[0]?.step_no === 1 && (
                 <div className="col-4">
-                    <Step1Queries />
+                    <Step1Queries id={id} />
                 </div>
             )}
             {selected_profile[0]?.step_no === 2 && (
@@ -215,7 +215,7 @@ function Profile() {
             )}
             {selected_profile[0]?.step_no === 2 && (
                 <div className="col-4">
-                    <Step2Queries />
+                    <Step2Queries id={id} />
                 </div>
             )}
         </div>

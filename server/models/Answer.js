@@ -11,15 +11,44 @@ module.exports = class Answer {
             [profile_id, question_id, question_name, rank]
         );
     }
-    static getAll(condition) {
-        const { profile_id, rank } = condition;
+    static getAll(profile_id) {
         return connection.execute(
             `
             SELECT * 
             FROM answers 
-            WHERE profile_id = ? AND rank = ?
+            WHERE profile_id = ?
             `,
-            [profile_id, rank]
+            [profile_id]
+        );
+    }
+    static getById(id) {
+        return connection.execute(
+            `
+            SELECT * 
+            FROM answers 
+            WHERE id = ?
+            `,
+            [id]
+        );
+    }
+    static update_answer_rank(condition) {
+        const { id, rank } = condition;
+        return connection.execute(
+            `
+                UPDATE answers 
+                SET rank = ?
+                WHERE id = ?
+                `,
+            [rank, id]
+        );
+    }
+    static delete_answer(id) {
+        return connection.execute(
+            `
+            DELETE FROM answers 
+            WHERE id = ?
+            `,
+            [id]
         );
     }
 };

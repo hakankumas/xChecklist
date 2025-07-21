@@ -1,31 +1,34 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
-function Step1Queries() {
+function Step1Queries({ id }) {
     console.log("Step1Queries rendered.");
-    const [questions, setQuestions] = useState([]);
-    const handleData = async () => {
+
+    const handleAddList = async (question) => {
         try {
-            const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}/question/rank/0`
+            const condition = {
+                profile_id: id,
+                question_id: question.id,
+                question_name: question.name,
+                rank: 1,
+            };
+            await axios.post(
+                `${import.meta.env.VITE_API_URL}/answer/create`,
+                condition
             );
-            setQuestions(response.data.question);
         } catch (error) {
             console.log(error);
         }
     };
-    useEffect(() => {
-        handleData();
-    }, []);
-    console.log(questions);
+
     return (
         <div>
             <div className="h2">Ek Sorular</div>
-            {questions.length > 0 &&
-                questions.map((question) => (
+            {group0.length > 0 &&
+                group0.map((question) => (
                     <div
                         key={question.id}
                         className="border q-select px-3 pt-3"
                         title="Ekle"
+                        onClick={() => handleAddList(question)}
                     >
                         <p>{question.name}</p>
                     </div>
