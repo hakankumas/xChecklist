@@ -2,16 +2,20 @@ const connection = require("../database/db");
 
 module.exports = class Question {
     static getAll() {
-        return connection.execute(`SELECT * FROM questions `);
+        return connection.execute(`SELECT * FROM questions`);
     }
     static getById(id) {
-        return connection.execute(`SELECT *  FROM questions  WHERE id = ?`, [
+        return connection.execute(`SELECT *  FROM questions WHERE id = ?`, [
+            id,
+        ]);
+    }
+    static getById_rank(id) {
+        return connection.execute(`SELECT *  FROM questions WHERE rank = ?`, [
             id,
         ]);
     }
     static create_question(condition) {
-        let { name } = condition;
-        name = name ? name : "-";
+        const { name } = condition;
         return connection.execute(
             `
             INSERT INTO questions (name) 

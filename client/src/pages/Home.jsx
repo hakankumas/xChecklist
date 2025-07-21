@@ -64,16 +64,16 @@ function Home() {
                     <thead style={{ border: "1px solid black" }}>
                         <tr>
                             <th style={{ width: "30%" }}>Domain Adresi</th>
-                            <th style={{ width: "25%" }}>Google Hesabı</th>
-                            <th style={{ width: "25%" }}>Email</th>
+                            <th style={{ width: "30%" }}>Google Hesabı</th>
+                            <th style={{ width: "30%" }}>Email</th>
                             <th
-                                style={{ width: "10%" }}
+                                style={{ width: "100px" }}
                                 className="text-center"
                             >
                                 Düzenle
                             </th>
                             <th
-                                style={{ width: "10%" }}
+                                style={{ width: "100px" }}
                                 className="text-center"
                             >
                                 Sil

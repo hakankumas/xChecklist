@@ -18,7 +18,7 @@ function Header() {
                     <CreateProfile />
                 </Link>
             </ul>
-            <hr />
+            <hr className="pb-2" />
         </div>
     );
 }
