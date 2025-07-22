@@ -2,7 +2,9 @@ const connection = require("../database/db");
 
 module.exports = class Question {
     static getAll() {
-        return connection.execute(`SELECT * FROM questions`);
+        return connection.execute(
+            `SELECT * FROM questions ORDER BY rank ASC, id ASC`
+        );
     }
     static getById(id) {
         return connection.execute(`SELECT *  FROM questions WHERE id = ?`, [
@@ -33,6 +35,17 @@ module.exports = class Question {
             WHERE id = ?
             `,
             [name, id]
+        );
+    }
+    static update_question_note(condition) {
+        const { id, note } = condition;
+        return connection.execute(
+            `
+            UPDATE questions 
+            SET note = ?
+            WHERE id = ?
+            `,
+            [note, id]
         );
     }
     static update_question_rank(condition) {

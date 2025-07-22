@@ -1,10 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import {
-    getProfile,
-    updateProfileStepNo,
-} from "../redux/features/profile/profileSlice";
+import { useEffect, useState } from "react";
 import { FaRegCheckCircle, FaRegEnvelope } from "react-icons/fa";
 import {
     FaRegArrowAltCircleRight,
@@ -14,26 +9,34 @@ import Step1Queries from "../components/Step1Queries";
 import Step2Queries from "../components/Step2Queries";
 import Step1QueriesSelected from "../components/Step1QueriesSelected";
 import Step2QueriesSelected from "../components/Step2QueriesSelected";
+import axios from "axios";
 function Profile() {
     console.log("Profile is worked.");
-    const dispatch = useDispatch();
     const { id } = useParams();
-    const { selected_profile } = useSelector((state) => state.profile);
-
+    const [selected_profile, setSelectedProfile] = useState([]);
+    const handleProfile = async () => {
+        const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/profile/${id}`
+        );
+        setSelectedProfile(response.data.profile);
+    };
     useEffect(() => {
-        dispatch(getProfile(id));
-    }, [id, dispatch]);
+        handleProfile();
+    }, []);
 
     const handleReport = (step_id) => {
         console.log(`handleReport ${step_id}`);
     };
-    const handleProcess = (id, step_id) => {
+    const handleProcess = async (id, step_id) => {
         const condition = {
             id,
             step_no: step_id,
         };
-        dispatch(updateProfileStepNo(condition));
-        dispatch(getProfile(id));
+        await axios.post(
+            `${import.meta.env.VITE_API_URL}/profile/update/stepno`,
+            condition
+        );
+        handleProfile();
     };
     const stepTexts = {
         0: "Analizi Başlat",

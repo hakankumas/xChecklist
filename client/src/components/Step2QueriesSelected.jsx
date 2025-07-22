@@ -1,33 +1,42 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
+import { useCustomSnackBar } from "../hooks/useCustomSnackBar";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    delete_answer2,
+    getall_answer2,
+} from "../redux/features/answer/answerSlice";
+
 function Step2QueriesSelected({ id }) {
     console.log("Step2QueriesSelected rendered.");
-    const [selected_questions, setSelectedQuestions] = useState([]);
-    const handleData = async () => {
+    const { snackBar_success, snackBar_error } = useCustomSnackBar();
+    const dispatch = useDispatch();
+    const { answers2 } = useSelector((state) => state.answer);
+    useEffect(() => {
+        dispatch(getall_answer2({ profile_id: id }));
+    }, [dispatch, id]);
+
+    const handleDeleteList = async (answer) => {
         try {
-            const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}/answer/getall/${id}/2`
-            );
-            setSelectedQuestions(response.data.answer);
+            await dispatch(delete_answer2(answer.id));
+            snackBar_success();
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            snackBar_error();
         }
     };
-    useEffect(() => {
-        handleData();
-    }, []);
-    console.log(selected_questions);
+
     return (
         <div>
             <div className="h2">Detaylı Analiz Raporu Soruları</div>
-            {selected_questions.length > 0 &&
-                selected_questions.map((question) => (
+            {answers2.length > 0 &&
+                answers2.map((answer2) => (
                     <div
-                        key={question.id}
+                        key={answer2.id}
                         className="border q-unselect px-3 pt-3"
                         title="Kaldır"
+                        onClick={() => handleDeleteList(answer2)}
                     >
-                        <p>{question.question_name}</p>
+                        <p>{answer2.question_name}</p>
                     </div>
                 ))}
         </div>

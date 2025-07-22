@@ -1,33 +1,42 @@
+import { useEffect } from "react";
+import { useCustomSnackBar } from "../hooks/useCustomSnackBar";
 import { useDispatch, useSelector } from "react-redux";
+import {
+    delete_answer,
+    getall_answer,
+} from "../redux/features/answer/answerSlice";
+
 function Step1QueriesSelected({ id }) {
     console.log("Step1QueriesSelected rendered.");
+    const { snackBar_success, snackBar_error } = useCustomSnackBar();
     const dispatch = useDispatch();
-    const { group1 } = useSelector((state) => state.answer);
+    const { answers } = useSelector((state) => state.answer);
+    useEffect(() => {
+        dispatch(getall_answer({ profile_id: id, rank: 1 }));
+    }, [dispatch, id]);
 
-    const handleRemoveList = async (question) => {
+    const handleDeleteList = async (answer) => {
         try {
-            const condition = {
-                profile_id: id,
-                question_id: question.id,
-            };
-            dispatch(remove_answer(condition));
+            await dispatch(delete_answer(answer.id));
+            snackBar_success();
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            snackBar_error();
         }
     };
 
     return (
         <div>
             <div className="h2">Ön Analiz Raporu Soruları</div>
-            {group1.length > 0 &&
-                group1.map((question) => (
+            {answers.length > 0 &&
+                answers.map((answer) => (
                     <div
-                        key={question.id}
+                        key={answer.id}
                         className="border q-unselect px-3 pt-3"
                         title="Kaldır"
-                        onClick={() => handleRemoveList(question)}
+                        onClick={() => handleDeleteList(answer)}
                     >
-                        <p>{question.question_name}</p>
+                        <p>{answer.question_name}</p>
                     </div>
                 ))}
         </div>

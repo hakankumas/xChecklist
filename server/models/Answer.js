@@ -17,8 +17,20 @@ module.exports = class Answer {
             SELECT * 
             FROM answers 
             WHERE profile_id = ?
+            ORDER BY rank ASC, id ASC
             `,
             [profile_id]
+        );
+    }
+    static getAll_rank(condition) {
+        const { profile_id, rank } = condition;
+        return connection.execute(
+            `
+            SELECT * 
+            FROM answers 
+            WHERE profile_id = ? AND rank = ?
+            `,
+            [profile_id, rank]
         );
     }
     static getById(id) {

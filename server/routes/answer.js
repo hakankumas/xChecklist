@@ -6,6 +6,6 @@ router.get("/getall/:profile_id/:rank", answerController.getall_profile_rank);
 router.get("/getall/:profile_id", answerController.getall_profile);
 router.post("/create", answerController.create);
 router.get("/update/rank", answerController.update_rank);
-router.get("/remove", answerController.remove);
+router.get("/delete/:id", answerController.delete);
 
 module.exports = router;

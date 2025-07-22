@@ -2,39 +2,45 @@ import { useEffect, useState } from "react";
 import { FaCheck, FaEdit } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import {
-    deleteProfile,
-    emptySelectedProfile,
-    getAllProfile,
-    updateProfile,
-} from "../redux/features/profile/profileSlice";
 import SelectRank from "../components/SelectRank";
-
+import { useCustomSnackBar } from "../hooks/useCustomSnackBar";
+import axios from "axios";
+import { useSelector } from "react-redux";
 function Home() {
+    const { snackBar_success, snackBar_error } = useCustomSnackBar();
     console.log("Home worked.");
-    const { profiles } = useSelector((state) => state.profile);
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(emptySelectedProfile());
-        dispatch(getAllProfile());
-    }, [dispatch]);
-
     const [newData, setNewData] = useState({
         id: "",
         domain_name: "",
         google_account: "",
         email: "",
     });
+    const [profiles, setProfiles] = useState([]);
+    const handleData = async () => {
+        try {
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_URL}/profile/getall`
+            );
+            setProfiles(response.data.profile);
+        } catch (error) {
+            console.error(`Sistem Mesajı!: ${error}`);
+        }
+    };
     const handleUpdate = async () => {
         const result = window.confirm(
             `Bu profili güncellemek istiyor musunuz?`
         );
         if (result) {
             try {
-                dispatch(updateProfile(newData));
+                const response = await axios.post(
+                    `${import.meta.env.VITE_API_URL}/profile/update`,
+                    newData
+                );
+                snackBar_success();
+                handleData();
             } catch (error) {
                 console.error(`Sistem Mesajı!: ${error}`);
+                snackBar_error();
             }
         }
         setNewData({
@@ -44,18 +50,31 @@ function Home() {
             email: "",
         });
     };
-    const handleDelete = (id) => {
-        const result = window.confirm(
-            `Bu profili silmek istiyor musunuz? ID: ${id}`
-        );
+    const handleDelete = async (id) => {
+        const result = window.confirm(`Bu profili silmek istiyor musunuz?`);
         if (result) {
             try {
-                dispatch(deleteProfile(id));
+                const response = await axios.get(
+                    `${import.meta.env.VITE_API_URL}/profile/delete/${id}`
+                );
+                snackBar_success();
+                handleData();
             } catch (error) {
                 console.error(`Sistem Mesajı!: ${error}`);
+                snackBar_error();
             }
         }
     };
+
+    useEffect(() => {
+        handleData();
+    }, []);
+
+    const { new_profiles } = useSelector((state) => state.profile);
+
+    useEffect(() => {
+        handleData();
+    }, [new_profiles]);
 
     return (
         <div className="row">

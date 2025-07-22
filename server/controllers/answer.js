@@ -8,7 +8,7 @@ exports.getall_profile_rank = async (req, res) => {
             profile_id: req.params.profile_id,
             rank: req.params.rank,
         };
-        const answers = await Answer.getAll(condition);
+        const answers = await Answer.getAll_rank(condition);
         if (answers[0].length > 0) res.status(200).json({ answer: answers[0] });
         else res.status(404).json({ message: "Not found." });
     } catch (error) {
@@ -64,11 +64,11 @@ exports.update_rank = async (req, res) => {
     }
 };
 
-exports.remove = async (req, res) => {
+exports.delete = async (req, res) => {
     try {
-        const selected_answer = await Answer.getById(req.body.id);
-        const remove_answer = await Answer.remove_answer(req.body);
-        if (remove_answer[0].affectedRows > 0) {
+        const selected_answer = await Answer.getById(req.params.id);
+        const delete_answer = await Answer.delete_answer(req.params.id);
+        if (delete_answer[0].affectedRows > 0) {
             res.status(200).json({
                 answer: selected_answer[0][0],
                 message: "Answer deleted successfully.",

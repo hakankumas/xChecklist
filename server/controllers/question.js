@@ -56,7 +56,13 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const updated_question = await Question.update_question_name(req.body);
+        let updated_question;
+        if (req.body.name) {
+            updated_question = await Question.update_question_name(req.body);
+        }
+        if (req.body.note) {
+            updated_question = await Question.update_question_note(req.body);
+        }
         if (updated_question[0].affectedRows > 0) {
             const selected_question = await Question.getById(req.body.id);
             res.status(200).json({

@@ -1,8 +1,18 @@
-import axios from "axios";
+import { useEffect } from "react";
+import { useCustomSnackBar } from "../hooks/useCustomSnackBar";
+import { useDispatch, useSelector } from "react-redux";
+import { get_rank_0 } from "../redux/features/question/questionSlice";
+import { create_answer } from "../redux/features/answer/answerSlice";
 function Step1Queries({ id }) {
     console.log("Step1Queries rendered.");
-
-    const handleAddList = async (question) => {
+    const { snackBar_success, snackBar_error } = useCustomSnackBar();
+    const dispatch = useDispatch();
+    const { free_questions } = useSelector((state) => state.question);
+    const { answers } = useSelector((state) => state.answer);
+    useEffect(() => {
+        dispatch(get_rank_0());
+    }, [dispatch, id]);
+    const handleCreate = async (question) => {
         try {
             const condition = {
                 profile_id: id,
@@ -10,29 +20,44 @@ function Step1Queries({ id }) {
                 question_name: question.name,
                 rank: 1,
             };
-            await axios.post(
-                `${import.meta.env.VITE_API_URL}/answer/create`,
-                condition
-            );
+            dispatch(create_answer(condition));
+            snackBar_success();
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            snackBar_error();
         }
     };
+
+    // Eklenmiş question_id'leri çıkar
+    const addedQuestionIds = answers.map((a) => a.question_id);
+
+    // Filtrelenmiş sorular
+    const filteredQuestions = free_questions.filter(
+        (q) => !addedQuestionIds.includes(q.id)
+    );
 
     return (
         <div>
             <div className="h2">Ek Sorular</div>
-            {group0.length > 0 &&
-                group0.map((question) => (
+            {filteredQuestions.length > 0 ? (
+                filteredQuestions.map((question) => (
                     <div
                         key={question.id}
                         className="border q-select px-3 pt-3"
                         title="Ekle"
-                        onClick={() => handleAddList(question)}
+                        onClick={() => handleCreate(question)}
                     >
                         <p>{question.name}</p>
+                        <small
+                            style={{ fontWeight: "bold", fontStyle: "italic" }}
+                        >
+                            Not: {question.note}
+                        </small>
                     </div>
-                ))}
+                ))
+            ) : (
+                <p className="alert alert-success">Tüm sorular eklendi.</p>
+            )}
         </div>
     );
 }

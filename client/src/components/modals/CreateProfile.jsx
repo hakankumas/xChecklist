@@ -2,12 +2,15 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FaUserPlus } from "react-icons/fa";
+// import axios from "axios";
+import { useCustomSnackBar } from "../../hooks/useCustomSnackBar";
 import { useDispatch } from "react-redux";
 import { createProfile } from "../../redux/features/profile/profileSlice";
-
 function CreateProfile() {
     console.log("CreateProfile is worked.");
     const dispatch = useDispatch();
+    const { snackBar_success, snackBar_error } = useCustomSnackBar();
+
     const [show, setShow] = useState(false);
     const [newData, setNewData] = useState({
         domain_name: "",
@@ -23,13 +26,15 @@ function CreateProfile() {
             email: "",
         });
     };
-    const handleCreate = () => {
+    const handleCreate = async () => {
         if (newData.domain_name.trim() !== "") {
             try {
                 dispatch(createProfile(newData));
+                snackBar_success();
                 handleClose();
             } catch (error) {
                 console.error(error);
+                snackBar_error();
             }
         }
     };

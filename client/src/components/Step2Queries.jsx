@@ -1,35 +1,63 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
+import { useCustomSnackBar } from "../hooks/useCustomSnackBar";
+import { useDispatch, useSelector } from "react-redux";
+import { get_rank_0 } from "../redux/features/question/questionSlice";
+import { create_answer2 } from "../redux/features/answer/answerSlice";
 function Step2Queries({ id }) {
     console.log("Step2Queries rendered.");
-    const [questions, setQuestions] = useState([]);
-    const handleData = async () => {
+    const { snackBar_success, snackBar_error } = useCustomSnackBar();
+    const dispatch = useDispatch();
+    const { free_questions } = useSelector((state) => state.question);
+    const { answers2 } = useSelector((state) => state.answer);
+    useEffect(() => {
+        dispatch(get_rank_0());
+    }, [dispatch, id]);
+    const handleCreate = async (question) => {
         try {
-            const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}/question/rank/0`
-            );
-            setQuestions(response.data.question);
+            const condition = {
+                profile_id: id,
+                question_id: question.id,
+                question_name: question.name,
+                rank: 2,
+            };
+            dispatch(create_answer2(condition));
+            snackBar_success();
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            snackBar_error();
         }
     };
-    useEffect(() => {
-        handleData();
-    }, []);
-    console.log(questions);
+
+    // Eklenmiş question_id'leri çıkar
+    const addedQuestionIds = answers2.map((a) => a.question_id);
+
+    // Filtrelenmiş sorular
+    const filteredQuestions = free_questions.filter(
+        (q) => !addedQuestionIds.includes(q.id)
+    );
+
     return (
         <div>
             <div className="h2">Ek Sorular</div>
-            {questions.length > 0 &&
-                questions.map((question) => (
+            {filteredQuestions.length > 0 ? (
+                filteredQuestions.map((question) => (
                     <div
                         key={question.id}
                         className="border q-select px-3 pt-3"
                         title="Ekle"
+                        onClick={() => handleCreate(question)}
                     >
                         <p>{question.name}</p>
+                        <small
+                            style={{ fontWeight: "bold", fontStyle: "italic" }}
+                        >
+                            Not: {question.note}
+                        </small>
                     </div>
-                ))}
+                ))
+            ) : (
+                <p className="alert alert-success">Tüm sorular eklendi.</p>
+            )}
         </div>
     );
 }
