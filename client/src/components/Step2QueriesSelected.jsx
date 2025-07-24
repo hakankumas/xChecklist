@@ -16,6 +16,8 @@ function Step2QueriesSelected({ id }) {
     }, [dispatch, id]);
 
     const handleDeleteList = async (answer) => {
+        const result = window.confirm("Silme işlemini onaylıyor musunuz?");
+        if (!result) return;
         try {
             await dispatch(delete_answer2(answer.id));
             snackBar_success();
@@ -26,18 +28,21 @@ function Step2QueriesSelected({ id }) {
     };
 
     return (
-        <div>
-            <div className="h2">Detaylı Analiz Raporu Soruları</div>
+        <div style={{ height: "40vh", overflowY: "auto" }}>
+            <div className="fs-3 fw-bold mb-2">
+                Detaylı Analiz Raporu Soruları
+            </div>
             {answers2.length > 0 &&
                 answers2.map((answer2) => (
                     <div
                         key={answer2.id}
-                        className="border q-unselect px-3 pt-3"
+                        className="border q-unselect px-3 pt-2"
                         title="Kaldır"
                         onClick={() => handleDeleteList(answer2)}
                     >
-                        <p>{answer2.question_name}</p>
+                        <p className="mb-2">{answer2.question_name}</p>
                         <small
+                            className="d-flex mb-2"
                             style={{ fontWeight: "bold", fontStyle: "italic" }}
                         >
                             Not: {answer2.note}

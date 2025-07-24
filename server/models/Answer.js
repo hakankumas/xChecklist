@@ -63,4 +63,25 @@ module.exports = class Answer {
             [id]
         );
     }
+    static update({ id, data }) {
+        const { question_name, answer_text, note } = data;
+        if (question_name) {
+            return connection.execute(
+                `UPDATE answers SET question_name = ? WHERE id = ?`,
+                [question_name, id]
+            );
+        }
+        if (answer_text) {
+            return connection.execute(
+                `UPDATE answers SET answer_text = ? WHERE id = ?`,
+                [answer_text, id]
+            );
+        }
+        if (note) {
+            return connection.execute(
+                `UPDATE answers SET note = ? WHERE id = ?`,
+                [note, id]
+            );
+        }
+    }
 };

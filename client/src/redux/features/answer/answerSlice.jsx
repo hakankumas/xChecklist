@@ -29,6 +29,17 @@ export const create_answer = createAsyncThunk(
     }
 );
 
+export const update_answer = createAsyncThunk(
+    "answer/update",
+    async ({ id, data }) => {
+        const response = await axios.post(
+            `${import.meta.env.VITE_API_URL}/answer/update`,
+            { id, data }
+        );
+        return response.data.answer;
+    }
+);
+
 export const delete_answer = createAsyncThunk("answer/delete", async (id) => {
     const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/answer/delete/${id}`
@@ -57,6 +68,17 @@ export const create_answer2 = createAsyncThunk(
     }
 );
 
+export const update_answer2 = createAsyncThunk(
+    "answer2/update",
+    async ({ id, data }) => {
+        const response = await axios.post(
+            `${import.meta.env.VITE_API_URL}/answer/update`,
+            { id, data }
+        );
+        return response.data.answer;
+    }
+);
+
 export const delete_answer2 = createAsyncThunk("answer2/delete", async (id) => {
     const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/answer/delete/${id}`
@@ -75,6 +97,15 @@ export const answerSlice = createSlice({
             .addCase(create_answer.fulfilled, (state, action) => {
                 state.answers = [...state.answers, action.payload];
             })
+            .addCase(update_answer.fulfilled, (state, action) => {
+                state.answers = [
+                    ...state.answers.map((answer) =>
+                        answer.id !== action.payload.id
+                            ? answer
+                            : action.payload
+                    ),
+                ];
+            })
             .addCase(delete_answer.fulfilled, (state, action) => {
                 state.answers = state.answers.filter(
                     (answer) => answer.id !== action.payload.id
@@ -87,6 +118,15 @@ export const answerSlice = createSlice({
             })
             .addCase(create_answer2.fulfilled, (state, action) => {
                 state.answers2 = [...state.answers2, action.payload];
+            })
+            .addCase(update_answer2.fulfilled, (state, action) => {
+                state.answers2 = [
+                    ...state.answers2.map((answer2) =>
+                        answer2.id !== action.payload.id
+                            ? answer2
+                            : action.payload
+                    ),
+                ];
             })
             .addCase(delete_answer2.fulfilled, (state, action) => {
                 state.answers2 = state.answers2.filter(

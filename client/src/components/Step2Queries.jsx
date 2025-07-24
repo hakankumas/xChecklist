@@ -38,18 +38,19 @@ function Step2Queries({ id }) {
     );
 
     return (
-        <div>
-            <div className="h2">Ek Sorular</div>
+        <div style={{ height: "40vh", overflowY: "auto" }}>
+            <div className="fs-3 fw-bold mb-2">Ek Sorular</div>
             {filteredQuestions.length > 0 ? (
                 filteredQuestions.map((question) => (
                     <div
                         key={question.id}
-                        className="border q-select px-3 pt-3"
+                        className="border q-select px-3 pt-2"
                         title="Ekle"
                         onClick={() => handleCreate(question)}
                     >
-                        <p>{question.name}</p>
+                        <p className="mb-2">{question.name}</p>
                         <small
+                            className="d-flex mb-2"
                             style={{ fontWeight: "bold", fontStyle: "italic" }}
                         >
                             Not: {question.note}

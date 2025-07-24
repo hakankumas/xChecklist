@@ -47,6 +47,23 @@ exports.create = async (req, res) => {
     }
 };
 
+exports.update = async (req, res) => {
+    try {
+        const updated_answer = await Answer.update(req.body);
+        if (updated_answer[0].affectedRows > 0) {
+            const selected_answer = await Answer.getById(req.body.id);
+            res.status(200).json({
+                answer: selected_answer[0][0],
+                message: "Answer updated successfully.",
+            });
+        } else {
+            res.status(404).json({ message: "Not found." });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+};
+
 exports.update_rank = async (req, res) => {
     try {
         const selected_answer = await Answer.getById(req.body.id);

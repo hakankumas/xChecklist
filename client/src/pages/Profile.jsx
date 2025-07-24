@@ -10,6 +10,9 @@ import Step2Queries from "../components/Step2Queries";
 import Step1QueriesSelected from "../components/Step1QueriesSelected";
 import Step2QueriesSelected from "../components/Step2QueriesSelected";
 import axios from "axios";
+import Answer1 from "../components/Answer1";
+import Answer2 from "../components/Answer2";
+import LogRecords from "../components/LogRecords";
 function Profile() {
     console.log("Profile is worked.");
     const { id } = useParams();
@@ -45,20 +48,20 @@ function Profile() {
         3: "Analiz Tamamlandı",
     };
     return (
-        <div className="d-flex flex-row justify-content-between">
+        <div className="d-flex flex-row justify-content-between gap-5">
             <div
-                className="col-3 px-5 py-2 shadow rounded-4"
+                className="col-3 rounded-4"
                 style={{
                     height: "max-content",
                 }}
             >
                 {selected_profile.length > 0 ? (
                     <>
-                        <div className="card shadowx p-3 my-3">
+                        <div className="shadow p-4 rounded-3">
                             <div className="card-body">
-                                <h5 className="card-title text-center fs-3 mb-3">
+                                <div className="card-title text-center fs-3 mb-3">
                                     Profil Bilgileri
-                                </h5>
+                                </div>
                                 <p className="card-text mb-2">
                                     <span>Domain Adı: </span>
                                     <br />
@@ -196,30 +199,36 @@ function Profile() {
                                 </button>
                             </div>
                         )}
+                        <hr className="my-4" />
+                        <LogRecords />
                     </>
                 ) : (
                     <p>Profil bilgileri yükleniyor...</p>
                 )}
             </div>
             {selected_profile[0]?.step_no === 1 && (
-                <div className="col-4">
-                    <Step1QueriesSelected id={id} />
-                </div>
-            )}
-            {selected_profile[0]?.step_no === 1 && (
-                <div className="col-4">
-                    <Step1Queries id={id} />
-                </div>
-            )}
-            {selected_profile[0]?.step_no === 2 && (
-                <div className="col-4">
-                    <Step2QueriesSelected id={id} />
-                </div>
+                <>
+                    <div className="col">
+                        <Answer1 id={id} />
+                    </div>
+                    <div className="col d-flex flex-column gap-4">
+                        <Step1QueriesSelected id={id} />
+                        <hr className="mb-0" />
+                        <Step1Queries id={id} />
+                    </div>
+                </>
             )}
             {selected_profile[0]?.step_no === 2 && (
-                <div className="col-4">
-                    <Step2Queries id={id} />
-                </div>
+                <>
+                    <div className="col">
+                        <Answer2 id={id} />
+                    </div>
+                    <div className="col d-flex flex-column gap-4">
+                        <Step2QueriesSelected id={id} />
+                        <hr className="mb-0" />
+                        <Step2Queries id={id} />
+                    </div>
+                </>
             )}
         </div>
     );
