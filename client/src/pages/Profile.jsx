@@ -12,7 +12,7 @@ import Step2QueriesSelected from "../components/Step2QueriesSelected";
 import axios from "axios";
 import Answer1 from "../components/Answer1";
 import Answer2 from "../components/Answer2";
-import LogRecords from "../components/LogRecords";
+import Logs from "../components/Logs";
 function Profile() {
     console.log("Profile is worked.");
     const { id } = useParams();
@@ -31,6 +31,18 @@ function Profile() {
         console.log(`handleReport ${step_id}`);
     };
     const handleProcess = async (id, step_id) => {
+        if (selected_profile[0]?.step_no < step_id) {
+            const result = window.confirm(
+                "Sonraki adıma geçmek istiyor musunuz?"
+            );
+            if (!result) return;
+        } else {
+            const result = window.confirm(
+                "Önceki adıma geri dönmek istiyor musunuz?"
+            );
+            if (!result) return;
+        }
+
         const condition = {
             id,
             step_no: step_id,
@@ -200,7 +212,7 @@ function Profile() {
                             </div>
                         )}
                         <hr className="my-4" />
-                        <LogRecords />
+                        <Logs id={id} />
                     </>
                 ) : (
                     <p>Profil bilgileri yükleniyor...</p>

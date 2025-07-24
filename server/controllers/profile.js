@@ -1,6 +1,7 @@
 const Profile = require("../models/Profile");
 const Question = require("../models/Question");
 const Answer = require("../models/Answer");
+const Log = require("../models/Log");
 
 exports.getall = async (req, res) => {
     try {
@@ -32,6 +33,15 @@ exports.create = async (req, res) => {
 
         if (new_profile[0].affectedRows > 0) {
             const newDataId = new_profile[0].insertId;
+            try {
+                await Log.create({
+                    profile_id: newDataId,
+                    log: `Profil oluşturuldu.`,
+                });
+            } catch (error) {
+                console.error(error);
+            }
+
             // Create Edilen Kullanıcı için Default Sorular Atanır
             try {
                 const step1Questions = await Question.getById_rank(1);
@@ -117,6 +127,54 @@ exports.stepno = async (req, res) => {
             req.body
         );
         if (updated_profile_stepno[0].affectedRows > 0) {
+            if (req.body.step_no === 1) {
+                const isLogMessage = await Log.search({
+                    profile_id: req.body.id,
+                    log: `Analiz Başlatıldı.`,
+                });
+                if (!isLogMessage[0].length > 0) {
+                    try {
+                        await Log.create({
+                            profile_id: req.body.id,
+                            log: `Analiz Başlatıldı.`,
+                        });
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            }
+            if (req.body.step_no === 2) {
+                const isLogMessage = await Log.search({
+                    profile_id: req.body.id,
+                    log: `Ön Analiz Raporu Tamamlandı.`,
+                });
+                if (!isLogMessage[0].length > 0) {
+                    try {
+                        await Log.create({
+                            profile_id: req.body.id,
+                            log: `Ön Analiz Raporu Tamamlandı.`,
+                        });
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            }
+            if (req.body.step_no === 3) {
+                const isLogMessage = await Log.search({
+                    profile_id: req.body.id,
+                    log: `Detaylı Analiz Raporu Tamamlandı.`,
+                });
+                if (!isLogMessage[0].length > 0) {
+                    try {
+                        await Log.create({
+                            profile_id: req.body.id,
+                            log: `Detaylı Analiz Raporu Tamamlandı.`,
+                        });
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            }
             const selected_profile = await Profile.getById(req.body.id);
             res.status(200).json({
                 profile: selected_profile[0][0],

@@ -1,6 +1,7 @@
 const Profile = require("../models/Profile");
 const Question = require("../models/Question");
 const Answer = require("../models/Answer");
+const Log = require("../models/Log");
 
 exports.getall = async (req, res) => {
     try {
