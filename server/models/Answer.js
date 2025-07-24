@@ -2,13 +2,13 @@ const connection = require("../database/db");
 
 module.exports = class Answer {
     static create_profile_questions(data) {
-        const { profile_id, question_id, question_name, rank } = data;
+        const { profile_id, question_id, question_name, note, rank } = data;
         return connection.execute(
             `
-            INSERT INTO answers (profile_id, question_id, question_name, rank) 
-            VALUES (?,?,?,?)
+            INSERT INTO answers (profile_id, question_id, question_name, note, rank) 
+            VALUES (?,?,?,?,?)
             `,
-            [profile_id, question_id, question_name, rank]
+            [profile_id, question_id, question_name, note, rank]
         );
     }
     static getAll(profile_id) {

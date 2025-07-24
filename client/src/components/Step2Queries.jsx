@@ -18,6 +18,7 @@ function Step2Queries({ id }) {
                 profile_id: id,
                 question_id: question.id,
                 question_name: question.name,
+                note: question.note,
                 rank: 2,
             };
             dispatch(create_answer2(condition));

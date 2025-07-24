@@ -37,6 +37,11 @@ function Step2QueriesSelected({ id }) {
                         onClick={() => handleDeleteList(answer2)}
                     >
                         <p>{answer2.question_name}</p>
+                        <small
+                            style={{ fontWeight: "bold", fontStyle: "italic" }}
+                        >
+                            Not: {answer2.note}
+                        </small>
                     </div>
                 ))}
         </div>

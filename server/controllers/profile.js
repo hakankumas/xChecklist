@@ -40,6 +40,7 @@ exports.create = async (req, res) => {
                         profile_id: newDataId,
                         question_id: s1q.id,
                         question_name: s1q.name,
+                        note: s1q.note,
                         rank: s1q.rank,
                     });
                 }
@@ -53,6 +54,7 @@ exports.create = async (req, res) => {
                         profile_id: newDataId,
                         question_id: s2q.id,
                         question_name: s2q.name,
+                        note: s2q.note,
                         rank: s2q.rank,
                     });
                 }
