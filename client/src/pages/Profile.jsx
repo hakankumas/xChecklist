@@ -1,6 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FaRegCheckCircle, FaRegEnvelope } from "react-icons/fa";
+import {
+    FaQq,
+    FaRegCheckCircle,
+    FaRegEnvelope,
+    FaRegFilePdf,
+} from "react-icons/fa";
 import {
     FaRegArrowAltCircleRight,
     FaRegArrowAltCircleLeft,
@@ -10,9 +15,10 @@ import Step2Queries from "../components/Step2Queries";
 import Step1QueriesSelected from "../components/Step1QueriesSelected";
 import Step2QueriesSelected from "../components/Step2QueriesSelected";
 import axios from "axios";
-import Answer1 from "../components/Answer1";
-import Answer2 from "../components/Answer2";
+import Step1Answer from "../components/Step1Answer";
+import Step2Answer from "../components/Step2Answer";
 import Logs from "../components/Logs";
+import ProfileInfo from "../components/ProfileInfo";
 function Profile() {
     console.log("Profile is worked.");
     const { id } = useParams();
@@ -27,9 +33,6 @@ function Profile() {
         handleProfile();
     }, []);
 
-    const handleReport = (step_id) => {
-        console.log(`handleReport ${step_id}`);
-    };
     const handleProcess = async (id, step_id) => {
         if (selected_profile[0]?.step_no < step_id) {
             const result = window.confirm(
@@ -53,11 +56,11 @@ function Profile() {
         );
         handleProfile();
     };
-    const stepTexts = {
-        0: "Analizi Başlat",
-        1: "Ön Analiz",
-        2: "Detaylı Analiz",
-        3: "Analiz Tamamlandı",
+    const handleGenerate = (step_id) => {
+        console.log(step_id);
+    };
+    const handleSendMail = (step_id) => {
+        console.log(step_id);
     };
     return (
         <div className="d-flex flex-row justify-content-between gap-5">
@@ -69,37 +72,7 @@ function Profile() {
             >
                 {selected_profile.length > 0 ? (
                     <>
-                        <div className="shadow p-4 rounded-3">
-                            <div className="card-body">
-                                <div className="card-title text-center fs-3 mb-3">
-                                    Profil Bilgileri
-                                </div>
-                                <p className="card-text mb-2">
-                                    <span>Domain Adı: </span>
-                                    <br />
-                                    <strong>
-                                        {selected_profile[0].domain_name}
-                                    </strong>
-                                </p>
-                                <p className="card-text mb-2">
-                                    <span>Google Hesabı: </span>
-                                    <br />
-                                    <strong>
-                                        {selected_profile[0].google_account}
-                                    </strong>
-                                </p>
-                                <p className="card-text mb-2">
-                                    <span>Email: </span>
-                                    <br />
-                                    <strong>{selected_profile[0].email}</strong>
-                                </p>
-                            </div>
-                            <hr className="m-0 mb-3" />
-                            <div className="text-danger text-center fnt-italic fw-bold fs-5">
-                                {stepTexts[selected_profile[0]?.step_no] ||
-                                    "Bilinmeyen Adım"}
-                            </div>
-                        </div>
+                        <ProfileInfo data={selected_profile[0]} />
                         {selected_profile[0].step_no === 0 && (
                             <div className="my-3 d-flex justify-content-end">
                                 <button
@@ -114,12 +87,27 @@ function Profile() {
                             </div>
                         )}
                         {selected_profile[0].step_no === 1 && (
-                            <div className="my-3 d-flex flex-row justify-content-between gap-3">
-                                <div>
+                            <div className="my-3 d-flex flex-row justify-content-between">
+                                <div className="d-flex flex-row gap-3">
+                                    <button
+                                        className="btn btn-lg btn-success"
+                                        title="Rapor Oluştur"
+                                        onClick={() =>
+                                            handleGenerate(
+                                                selected_profile[0].id
+                                            )
+                                        }
+                                    >
+                                        <FaRegFilePdf size={30} />
+                                    </button>
                                     <button
                                         className="btn btn-lg btn-danger"
-                                        title="Rapor Gönder"
-                                        onClick={handleReport(1)}
+                                        title="Mail Gönder"
+                                        onClick={() =>
+                                            handleSendMail(
+                                                selected_profile[0].id
+                                            )
+                                        }
                                     >
                                         <FaRegEnvelope size={30} />
                                     </button>
@@ -157,7 +145,7 @@ function Profile() {
                                 <div>
                                     <button
                                         className="btn btn-lg btn-danger"
-                                        onClick={handleReport(2)}
+                                        onClick={handleSendMail(2)}
                                         title="Rapor Gönder"
                                     >
                                         <FaRegEnvelope size={30} />
@@ -196,7 +184,7 @@ function Profile() {
                                 <button
                                     className="btn btn-lg btn-danger"
                                     title="Yeniden Rapor Gönder"
-                                    onClick={handleReport(2)}
+                                    onClick={handleSendMail(2)}
                                 >
                                     <FaRegEnvelope size={30} />
                                 </button>
@@ -221,7 +209,7 @@ function Profile() {
             {selected_profile[0]?.step_no === 1 && (
                 <>
                     <div className="col">
-                        <Answer1 id={id} />
+                        <Step1Answer id={id} />
                     </div>
                     <div className="col d-flex flex-column gap-4">
                         <Step1QueriesSelected id={id} />
@@ -233,7 +221,7 @@ function Profile() {
             {selected_profile[0]?.step_no === 2 && (
                 <>
                     <div className="col">
-                        <Answer2 id={id} />
+                        <Step2Answer id={id} />
                     </div>
                     <div className="col d-flex flex-column gap-4">
                         <Step2QueriesSelected id={id} />
@@ -241,6 +229,13 @@ function Profile() {
                         <Step2Queries id={id} />
                     </div>
                 </>
+            )}
+            {selected_profile[0]?.step_no === 3 && (
+                <div className="col d-block align-content-center text-center">
+                    <p className="fs-1 fst-italic fw-bold text-success">
+                        Analiz İşlemleri Tamamlanmıştır.
+                    </p>
+                </div>
             )}
         </div>
     );

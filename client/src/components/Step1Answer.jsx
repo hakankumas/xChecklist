@@ -8,8 +8,8 @@ import {
 import { useEffect, useState } from "react";
 import { useCustomSnackBar } from "../hooks/useCustomSnackBar";
 
-function Answer1({ id }) {
-    console.log("Answer1 rendered.");
+function Step1Answer({ id }) {
+    console.log("Step1Answer rendered.");
     const { snackBar_success, snackBar_error } = useCustomSnackBar();
     const dispatch = useDispatch();
     const { answers } = useSelector((state) => state.answer);
@@ -173,4 +173,4 @@ function Answer1({ id }) {
     );
 }
 
-export default Answer1;
+export default Step1Answer;
