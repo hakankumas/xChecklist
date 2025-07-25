@@ -19,6 +19,7 @@ import Step1Answer from "../components/Step1Answer";
 import Step2Answer from "../components/Step2Answer";
 import Logs from "../components/Logs";
 import ProfileInfo from "../components/ProfileInfo";
+import MailStep1 from "../components/modals/MailStep1";
 function Profile() {
     console.log("Profile is worked.");
     const { id } = useParams();
@@ -100,17 +101,7 @@ function Profile() {
                                     >
                                         <FaRegFilePdf size={30} />
                                     </button>
-                                    <button
-                                        className="btn btn-lg btn-danger"
-                                        title="Mail Gönder"
-                                        onClick={() =>
-                                            handleSendMail(
-                                                selected_profile[0].id
-                                            )
-                                        }
-                                    >
-                                        <FaRegEnvelope size={30} />
-                                    </button>
+                                    <MailStep1 data={selected_profile[0]} />
                                 </div>
                                 <div className="d-flex flex-row gap-3">
                                     <button

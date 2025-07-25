@@ -13,11 +13,13 @@ const profileRoutes = require("./routes/profile");
 const questionRoutes = require("./routes/question");
 const answerRoutes = require("./routes/answer");
 const logRoutes = require("./routes/log");
+const mailRoutes = require("./routes/mail");
 
 app.use("/profile", profileRoutes);
 app.use("/question", questionRoutes);
 app.use("/answer", answerRoutes);
 app.use("/log", logRoutes);
+app.use("/mail", mailRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running at ${process.env.SERVER_URL}`);

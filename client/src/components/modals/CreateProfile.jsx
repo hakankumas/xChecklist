@@ -13,17 +13,17 @@ function CreateProfile() {
 
     const [show, setShow] = useState(false);
     const [newData, setNewData] = useState({
-        domain_name: "",
-        google_account: "",
-        email: "",
+        domain_name: "adanetajans.com",
+        google_account: "Adanet 1",
+        email: "info@adanetajans.com",
     });
     const handleShow = () => setShow(true);
     const handleClose = () => {
         setShow(false);
         setNewData({
-            domain_name: "",
-            google_account: "",
-            email: "",
+            domain_name: "adanetajans.com",
+            google_account: "Adanet 1",
+            email: "info@adanetajans.com",
         });
     };
     const handleCreate = async () => {

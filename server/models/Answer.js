@@ -2,13 +2,29 @@ const connection = require("../database/db");
 
 module.exports = class Answer {
     static create_profile_questions(data) {
-        const { profile_id, question_id, question_name, note, rank } = data;
+        const {
+            profile_id,
+            question_id,
+            question_name,
+            selection,
+            selected,
+            note,
+            rank,
+        } = data;
         return connection.execute(
             `
-            INSERT INTO answers (profile_id, question_id, question_name, note, rank) 
-            VALUES (?,?,?,?,?)
+            INSERT INTO answers (profile_id, question_id, question_name, selection, selected, note, rank) 
+            VALUES (?,?,?,?,?,?,?)
             `,
-            [profile_id, question_id, question_name, note, rank]
+            [
+                profile_id,
+                question_id,
+                question_name,
+                selection,
+                selected,
+                note,
+                rank,
+            ]
         );
     }
     static getAll(profile_id) {
@@ -64,7 +80,7 @@ module.exports = class Answer {
         );
     }
     static update({ id, data }) {
-        const { question_name, answer_text, note } = data;
+        const { question_name, answer_text, note, selected } = data;
         if (question_name) {
             return connection.execute(
                 `UPDATE answers SET question_name = ? WHERE id = ?`,
@@ -81,6 +97,12 @@ module.exports = class Answer {
             return connection.execute(
                 `UPDATE answers SET note = ? WHERE id = ?`,
                 [note, id]
+            );
+        }
+        if (selected) {
+            return connection.execute(
+                `UPDATE answers SET selected = ? WHERE id = ?`,
+                [selected, id]
             );
         }
     }

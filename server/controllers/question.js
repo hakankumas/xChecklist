@@ -61,6 +61,14 @@ exports.update = async (req, res) => {
         if (req.body.name) {
             updated_question = await Question.update_question_name(req.body);
         }
+        if (req.body.selection) {
+            updated_question = await Question.update_question_selection(
+                req.body
+            );
+        }
+        if (req.body.select) {
+            updated_question = await Question.update_question_select(req.body);
+        }
         if (req.body.note) {
             updated_question = await Question.update_question_note(req.body);
         }

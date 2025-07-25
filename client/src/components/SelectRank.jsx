@@ -42,30 +42,22 @@ function SelectRank() {
         }
     };
 
-    const handleUpdateQuestionName = async (id, name) => {
+    const handleUpdateTexts = async (id, data, process_id) => {
         try {
-            const condition = { id, name };
-            await axios.post(
-                `${import.meta.env.VITE_API_URL}/question/update`,
-                condition
-            );
-            snackBar_success();
-        } catch (error) {
-            console.error("Soru adı güncellenirken hata:", error);
-            snackBar_error();
-        }
-    };
+            let condition = null;
+            if (process_id === 1) condition = { id, name: data };
+            if (process_id === 2) condition = { id, selector: data };
+            if (process_id === 3) condition = { id, note: data };
+            if (process_id === 4) condition = { id, select: data };
 
-    const handleUpdateQuestionNote = async (id, note) => {
-        try {
-            const condition = { id, note };
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/question/update`,
                 condition
             );
+            if (process_id === 4) await handleData();
             snackBar_success();
         } catch (error) {
-            console.error("Not güncellenirken hata:", error);
+            console.error("Güncellenirken hata:", error);
             snackBar_error();
         }
     };
@@ -86,8 +78,9 @@ function SelectRank() {
                 <table className="table table-hover shadow">
                     <thead>
                         <tr className="fs-5">
-                            <th className="col-5 px-4">Soru</th>
-                            <th className="col-4 px-4">Not</th>
+                            <th className="col-3 px-4">Soru</th>
+                            <th className="col-3 px-4">Cevaplar</th>
+                            <th className="col-3 px-4">Not</th>
                             <th className="col-3 text-center">Rank</th>
                         </tr>
                     </thead>
@@ -103,6 +96,7 @@ function SelectRank() {
                                             [question.id]: {
                                                 name: question.name,
                                                 note: question.note || "",
+                                                selection: question.selection,
                                             },
                                         }));
                                         setEditableId(question.id);
@@ -125,10 +119,11 @@ function SelectRank() {
                                                 }))
                                             }
                                             onBlur={async () => {
-                                                await handleUpdateQuestionName(
+                                                await handleUpdateTexts(
                                                     question.id,
                                                     editedFields[question.id]
-                                                        ?.name
+                                                        ?.name,
+                                                    1
                                                 );
                                                 await handleData();
                                                 setEditableId(null);
@@ -143,6 +138,72 @@ function SelectRank() {
                                     )}
                                 </td>
 
+                                {/* Seçenek Alanı */}
+                                <td
+                                    className="px-4"
+                                    onDoubleClick={() => {
+                                        setEditedFields((prev) => ({
+                                            ...prev,
+                                            [question.id]: {
+                                                name: question.name,
+                                                note: question.note,
+                                                selection:
+                                                    question.selection || "",
+                                            },
+                                        }));
+                                        setEditableId(question.id);
+                                    }}
+                                >
+                                    {editableId === question.id ? (
+                                        <textarea
+                                            className="form-control"
+                                            value={
+                                                editedFields[question.id]
+                                                    ?.selection || ""
+                                            }
+                                            onChange={(e) =>
+                                                setEditedFields((prev) => ({
+                                                    ...prev,
+                                                    [question.id]: {
+                                                        ...prev[question.id],
+                                                        selection:
+                                                            e.target.value,
+                                                    },
+                                                }))
+                                            }
+                                            onBlur={async () => {
+                                                await handleUpdateTexts(
+                                                    question.id,
+                                                    editedFields[question.id]
+                                                        ?.selection,
+                                                    2
+                                                );
+                                                await handleData();
+                                                setEditableId(null);
+                                            }}
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter")
+                                                    e.target.blur();
+                                            }}
+                                        />
+                                    ) : // prettier-ignore
+                                    question.selection ? JSON.parse(question.selection).map((item, index) => (
+                                            <label key={index} style={{display: "block", marginBottom: "8px",}}>
+                                                <input
+                                                    type="radio"
+                                                    name={`answer-${question.id}`}
+                                                    checked={question.selected === item}
+                                                    value={item}
+                                                    onChange={() => handleUpdateTexts(question.id, item, 4)}
+                                                />
+                                                <span className="ms-2">{item}</span>
+                                            </label>
+                                        )
+                                    ) : (
+                                        "-"
+                                    )}
+                                </td>
+
                                 {/* Not Alanı */}
                                 <td
                                     className="px-4"
@@ -152,6 +213,7 @@ function SelectRank() {
                                             [question.id]: {
                                                 name: question.name,
                                                 note: question.note || "",
+                                                selection: question.selection,
                                             },
                                         }));
                                         setEditableId(question.id);
@@ -174,10 +236,11 @@ function SelectRank() {
                                                 }))
                                             }
                                             onBlur={async () => {
-                                                await handleUpdateQuestionNote(
+                                                await handleUpdateTexts(
                                                     question.id,
                                                     editedFields[question.id]
-                                                        ?.note
+                                                        ?.note,
+                                                    3
                                                 );
                                                 await handleData();
                                                 setEditableId(null);

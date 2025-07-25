@@ -41,7 +41,7 @@ function Step1Answer({ id }) {
                     <div className="shadow p-4 rounded-3 mb-3" key={answer.id}>
                         {/* Question */}
                         <div
-                            className="d-flex flex-row align-items-center gap-2 alert alert-primary mb-2"
+                            className="d-flex flex-row align-items-center gap-2 alert alert-primary___ mb-2 hv-shadow"
                             onDoubleClick={() =>
                                 setUpdateData({
                                     id: answer.id,
@@ -83,51 +83,40 @@ function Step1Answer({ id }) {
                         </div>
 
                         {/* Answer */}
-                        <div
-                            className="d-flex flex-row align-items-center gap-2 alert alert-success mb-2"
-                            onDoubleClick={() =>
-                                setUpdateData({
-                                    id: answer.id,
-                                    field: "answer_text",
-                                    value: answer.answer_text || "",
-                                })
-                            }
-                        >
+                        <div className="d-flex flex-row align-items-center gap-2 alert alert-success___ mb-2 hv-shadow">
                             <FaCheckCircle size={30} className="col-1" />
-                            {updateData.id === answer.id &&
-                            updateData.field === "answer_text" ? (
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={updateData.value}
-                                    onChange={(e) =>
-                                        setUpdateData({
-                                            ...updateData,
-                                            value: e.target.value,
-                                        })
-                                    }
-                                    onBlur={() => {
-                                        handleUpdate(answer.id, {
-                                            answer_text: updateData.value,
-                                        });
-                                        setUpdateData({
-                                            id: null,
-                                            field: "",
-                                            value: "",
-                                        });
-                                    }}
-                                    autoFocus
-                                />
-                            ) : (
-                                <span className="fs-6">
-                                    {answer.answer_text || "-"}
-                                </span>
-                            )}
+                            {answer.selection &&
+                                JSON.parse(answer.selection).map(
+                                    (item, index) => (
+                                        <label
+                                            key={index}
+                                            style={{
+                                                display: "block",
+                                                marginBottom: "8px",
+                                            }}
+                                        >
+                                            <input
+                                                type="radio"
+                                                name={`answer-${answer.id}`}
+                                                checked={
+                                                    answer.selected === item
+                                                }
+                                                value={item}
+                                                onChange={() =>
+                                                    handleUpdate(answer.id, {
+                                                        selected: item,
+                                                    })
+                                                }
+                                            />
+                                            <span className="ms-2">{item}</span>
+                                        </label>
+                                    )
+                                )}
                         </div>
 
                         {/* Note */}
                         <div
-                            className="d-flex flex-row align-items-center gap-2 alert alert-danger m-0"
+                            className="d-flex flex-row align-items-center gap-2 alert alert-danger___ m-0 hv-shadow"
                             onDoubleClick={() =>
                                 setUpdateData({
                                     id: answer.id,
@@ -162,7 +151,7 @@ function Step1Answer({ id }) {
                                     autoFocus
                                 />
                             ) : (
-                                <span className="fs-6">
+                                <span className="fs-6 text-danger">
                                     {answer.note || "-"}
                                 </span>
                             )}

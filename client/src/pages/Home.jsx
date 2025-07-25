@@ -5,10 +5,10 @@ function Home() {
 
     return (
         <div className="row">
-            <div className="col-6 pe-4">
+            <div className="col-5 pe-4">
                 <SelectProfile />
             </div>
-            <div className="col-6 ps-4">
+            <div className="col-7 ps-4">
                 <SelectRank />
             </div>
         </div>

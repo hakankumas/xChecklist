@@ -39,12 +39,6 @@ function Step1QueriesSelected({ id }) {
                         onClick={() => handleDeleteList(answer)}
                     >
                         <p className="mb-2">{answer.question_name}</p>
-                        <small
-                            className="d-flex mb-2"
-                            style={{ fontWeight: "bold", fontStyle: "italic" }}
-                        >
-                            Not: {answer.note}
-                        </small>
                     </div>
                 ))}
         </div>

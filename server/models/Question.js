@@ -17,13 +17,13 @@ module.exports = class Question {
         ]);
     }
     static create_question(condition) {
-        const { name } = condition;
+        const { name, selection, selected, note, rank } = condition;
         return connection.execute(
             `
-            INSERT INTO questions (name) 
-            VALUES (?)
+            INSERT INTO questions (name, selection, selected, note, rank) 
+            VALUES (?,?,?,?,?)
             `,
-            [name]
+            [name, selection, selected, note, rank]
         );
     }
     static update_question_name(condition) {
@@ -35,6 +35,28 @@ module.exports = class Question {
             WHERE id = ?
             `,
             [name, id]
+        );
+    }
+    static update_question_selection(condition) {
+        const { id, selection } = condition;
+        return connection.execute(
+            `
+            UPDATE questions 
+            SET selection = ?
+            WHERE id = ?
+            `,
+            [selection, id]
+        );
+    }
+    static update_question_select(condition) {
+        const { id, select } = condition;
+        return connection.execute(
+            `
+            UPDATE questions 
+            SET selected = ?
+            WHERE id = ?
+            `,
+            [select, id]
         );
     }
     static update_question_note(condition) {
