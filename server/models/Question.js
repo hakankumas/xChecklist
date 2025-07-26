@@ -18,13 +18,23 @@ module.exports = class Question {
     }
     static create_question(condition) {
         const { name, selection, selected, note, rank } = condition;
-        return connection.execute(
-            `
-            INSERT INTO questions (name, selection, selected, note, rank) 
-            VALUES (?,?,?,?,?)
-            `,
-            [name, selection, selected, note, rank]
-        );
+        if (!selected) {
+            return connection.execute(
+                `
+                INSERT INTO questions (name, selection, note, rank) 
+                VALUES (?,?,?,?)
+                `,
+                [name, selection, note, rank]
+            );
+        } else {
+            return connection.execute(
+                `
+                INSERT INTO questions (name, selection, selected, note, rank) 
+                VALUES (?,?,?,?,?)
+                `,
+                [name, selection, selected, note, rank]
+            );
+        }
     }
     static update_question_name(condition) {
         const { id, name } = condition;

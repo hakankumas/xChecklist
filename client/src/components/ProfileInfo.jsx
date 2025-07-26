@@ -1,4 +1,5 @@
 function ProfileInfo({ data }) {
+    console.log("ProfileInfo worked.");
     const { domain_name, google_account, email, step_no } = data;
     const stepTexts = {
         0: "Analizi Başlat",

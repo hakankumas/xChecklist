@@ -1,23 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCustomSnackBar } from "../hooks/useCustomSnackBar";
+import { useDispatch, useSelector } from "react-redux";
+import { getall_question } from "../redux/features/question/questionSlice";
 
 function SelectRank() {
+    console.log("SelectRank worked.");
     const { snackBar_success, snackBar_error } = useCustomSnackBar();
-    const [questions, setQuestions] = useState([]);
+    const { all_questions } = useSelector((state) => state.question);
+    const dispatch = useDispatch();
     const [editableId, setEditableId] = useState(null);
     const [editedFields, setEditedFields] = useState({});
-
-    const handleData = async () => {
-        try {
-            const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}/question/getall`
-            );
-            setQuestions(response.data.question);
-        } catch (error) {
-            console.error("Veri alınırken hata:", error);
-        }
-    };
 
     const handleUpdate = async (question_id, rank_value, currentRank) => {
         if (rank_value === String(currentRank)) return;
@@ -35,7 +28,7 @@ function SelectRank() {
                 condition
             );
             snackBar_success();
-            await handleData();
+            dispatch(getall_question());
         } catch (error) {
             console.error("Rank güncelleme hatası:", error);
             snackBar_error();
@@ -47,14 +40,14 @@ function SelectRank() {
             let condition = null;
             if (process_id === 1) condition = { id, name: data };
             if (process_id === 2) condition = { id, selector: data };
-            if (process_id === 3) condition = { id, note: data };
+            if (process_id === 3) condition = { id, note: data ? data : "-" };
             if (process_id === 4) condition = { id, select: data };
 
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/question/update`,
                 condition
             );
-            if (process_id === 4) await handleData();
+            if (process_id === 4) dispatch(getall_question());
             snackBar_success();
         } catch (error) {
             console.error("Güncellenirken hata:", error);
@@ -63,7 +56,7 @@ function SelectRank() {
     };
 
     useEffect(() => {
-        handleData();
+        dispatch(getall_question());
     }, []);
 
     const rankOptions = [
@@ -74,7 +67,7 @@ function SelectRank() {
 
     return (
         <div className="overflow-y-scroll h-screen px-3">
-            {questions.length > 0 ? (
+            {all_questions.length > 0 ? (
                 <table className="table table-hover shadow">
                     <thead>
                         <tr className="fs-5">
@@ -85,7 +78,7 @@ function SelectRank() {
                         </tr>
                     </thead>
                     <tbody>
-                        {questions.map((question) => (
+                        {all_questions.map((question) => (
                             <tr key={question.id}>
                                 {/* Soru Adı */}
                                 <td
@@ -125,7 +118,7 @@ function SelectRank() {
                                                         ?.name,
                                                     1
                                                 );
-                                                await handleData();
+                                                dispatch(getall_question());
                                                 setEditableId(null);
                                             }}
                                             onKeyDown={(e) => {
@@ -178,7 +171,7 @@ function SelectRank() {
                                                         ?.selection,
                                                     2
                                                 );
-                                                await handleData();
+                                                dispatch(getall_question());
                                                 setEditableId(null);
                                             }}
                                             onKeyDown={(e) => {
@@ -242,7 +235,7 @@ function SelectRank() {
                                                         ?.note,
                                                     3
                                                 );
-                                                await handleData();
+                                                dispatch(getall_question());
                                                 setEditableId(null);
                                             }}
                                             onKeyDown={(e) => {

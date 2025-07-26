@@ -4,6 +4,7 @@ import { HiArrowTurnDownRight } from "react-icons/hi2";
 import formatDate from "../hooks/useDateReturn";
 
 function Logs({ id }) {
+    console.log("Logs worked.");
     const [logs, setLogs] = useState([]);
     const handleData = async () => {
         const response = await axios.get(
