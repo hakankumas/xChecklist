@@ -1,4 +1,4 @@
-import SelectRank from "../components/SelectRank";
+import SelectQuestion from "../components/SelectQuestion";
 import SelectProfile from "../components/SelectProfile";
 function Home() {
     console.log("Home worked.");
@@ -9,7 +9,7 @@ function Home() {
                 <SelectProfile />
             </div>
             <div className="col-8 ps-4">
-                <SelectRank />
+                <SelectQuestion />
             </div>
         </div>
     );

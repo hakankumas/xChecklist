@@ -32,7 +32,7 @@ function CreateQuestion() {
         try {
             const condition = {
                 name: newData.new_name,
-                selection: newData.new_selection,
+                selection: newData.new_selection.replace(/'/g, '"'),
                 note: newData.new_note,
                 rank: newData.new_rank,
             };
@@ -76,6 +76,7 @@ function CreateQuestion() {
                         <label className="form-label">Şıklar</label>
                         <input
                             type="text"
+                            placeholder={`["Evet", "Hayır"]`}
                             className="form-control"
                             value={newData.new_answer}
                             onChange={(e) =>
@@ -112,9 +113,9 @@ function CreateQuestion() {
                                 })
                             }
                         >
+                            <option value="0">Boşta</option>
                             <option value="1">Ön Analiz Raporu</option>
                             <option value="2">Detaylı Analiz Raporu</option>
-                            <option value="0">Boşta</option>
                         </select>
                     </div>
                 </Modal.Body>
