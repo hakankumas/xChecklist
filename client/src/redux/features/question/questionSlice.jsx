@@ -31,6 +31,16 @@ export const create_question = createAsyncThunk(
     }
 );
 
+export const delete_question = createAsyncThunk(
+    "question/delete",
+    async (id) => {
+        const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/question/delete/${id}`
+        );
+        return response.data.question;
+    }
+);
+
 export const questionSlice = createSlice({
     name: "question",
     initialState,
@@ -45,6 +55,11 @@ export const questionSlice = createSlice({
             })
             .addCase(create_question.fulfilled, (state, action) => {
                 state.all_questions = [...state.all_questions, action.payload];
+            })
+            .addCase(delete_question.fulfilled, (state, action) => {
+                state.all_questions = state.all_questions.filter(
+                    (question) => question.id !== action.payload.id
+                );
             });
     },
 });
