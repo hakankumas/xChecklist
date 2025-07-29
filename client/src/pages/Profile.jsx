@@ -1,11 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {
-    FaQq,
-    FaRegCheckCircle,
-    FaRegEnvelope,
-    FaRegFilePdf,
-} from "react-icons/fa";
+import { FaRegCheckCircle, FaRegEnvelope } from "react-icons/fa";
 import {
     FaRegArrowAltCircleRight,
     FaRegArrowAltCircleLeft,
@@ -20,6 +15,7 @@ import Step2Answer from "../components/Step2Answer";
 import Logs from "../components/Logs";
 import ProfileInfo from "../components/ProfileInfo";
 import MailStep1 from "../components/modals/MailStep1";
+import GeneratePDF from "../components/GeneratePDF";
 function Profile() {
     console.log("Profile is worked.");
     const { id } = useParams();
@@ -57,11 +53,9 @@ function Profile() {
         );
         handleProfile();
     };
-    const handleGenerate = (step_id) => {
-        console.log(step_id);
-    };
-    const handleSendMail = (step_id) => {
-        console.log(step_id);
+
+    const handleSendMail = (profile_id) => {
+        console.log(profile_id);
     };
     return (
         <div className="d-flex flex-row justify-content-between gap-5">
@@ -89,23 +83,13 @@ function Profile() {
                         )}
                         {selected_profile[0].step_no === 1 && (
                             <div className="my-3 d-flex flex-row justify-content-between">
-                                <div className="d-flex flex-row gap-3">
-                                    <button
-                                        className="btn btn-lg btn-success"
-                                        title="Rapor Oluştur"
-                                        onClick={() =>
-                                            handleGenerate(
-                                                selected_profile[0].id
-                                            )
-                                        }
-                                    >
-                                        <FaRegFilePdf size={30} />
-                                    </button>
+                                <div className="d-flex flex-row gap-1">
+                                    <GeneratePDF data={selected_profile[0]} />
                                     <MailStep1 data={selected_profile[0]} />
                                 </div>
-                                <div className="d-flex flex-row gap-3">
+                                <div className="d-flex flex-row gap-1">
                                     <button
-                                        className="btn btn-lg btn-secondary"
+                                        className="btn btn-lg btn-outline-secondary border-0"
                                         title="Geri"
                                         onClick={() =>
                                             handleProcess(
@@ -114,10 +98,10 @@ function Profile() {
                                             )
                                         }
                                     >
-                                        <FaRegArrowAltCircleLeft size={30} />
+                                        <FaRegArrowAltCircleLeft size={40} />
                                     </button>
                                     <button
-                                        className="btn btn-lg btn-secondary"
+                                        className="btn btn-lg btn-outline-secondary border-0"
                                         title="İleri"
                                         onClick={() =>
                                             handleProcess(
@@ -126,7 +110,7 @@ function Profile() {
                                             )
                                         }
                                     >
-                                        <FaRegArrowAltCircleRight size={30} />
+                                        <FaRegArrowAltCircleRight size={40} />
                                     </button>
                                 </div>
                             </div>
@@ -136,7 +120,9 @@ function Profile() {
                                 <div>
                                     <button
                                         className="btn btn-lg btn-danger"
-                                        onClick={handleSendMail(2)}
+                                        onClick={handleSendMail(
+                                            selected_profile[0].id
+                                        )}
                                         title="Rapor Gönder"
                                     >
                                         <FaRegEnvelope size={30} />

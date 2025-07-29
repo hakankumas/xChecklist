@@ -80,17 +80,17 @@ module.exports = class Answer {
         );
     }
     static update({ id, data }) {
-        const { question_name, answer_text, note, selected } = data;
+        const { question_name, selection, note, selected } = data;
         if (question_name) {
             return connection.execute(
                 `UPDATE answers SET question_name = ? WHERE id = ?`,
                 [question_name, id]
             );
         }
-        if (answer_text) {
+        if (selection) {
             return connection.execute(
-                `UPDATE answers SET answer_text = ? WHERE id = ?`,
-                [answer_text, id]
+                `UPDATE answers SET selection = ? WHERE id = ?`,
+                [selection, id]
             );
         }
         if (note) {

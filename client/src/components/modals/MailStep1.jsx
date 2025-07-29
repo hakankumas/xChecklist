@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { FaRegEnvelope } from "react-icons/fa";
+import { FaRegEnvelope, FaRegFilePdf } from "react-icons/fa";
 import axios from "axios";
 import { useCustomSnackBar } from "../../hooks/useCustomSnackBar";
 function MailStep1({ data }) {
@@ -51,9 +51,12 @@ Detaylı bilgi almak için 0264 272 82 06 numaralı telefonu arayabilirsiniz.`,
     };
     return (
         <>
-            <Button variant="danger btn-lg" onClick={handleShow}>
+            <Button
+                variant="outline-success btn-lg border-0"
+                onClick={handleShow}
+            >
                 <div className="d-flex align-items-center">
-                    <FaRegEnvelope size={30} />
+                    <FaRegEnvelope size={40} />
                 </div>
             </Button>
 
@@ -103,6 +106,23 @@ Detaylı bilgi almak için 0264 272 82 06 numaralı telefonu arayabilirsiniz.`,
                                 });
                             }}
                         ></textarea>
+                    </div>
+                    <div className="d-flex flex-column">
+                        <label className="form-label">Ön Analiz Raporu</label>
+                        <a
+                            href={`${
+                                import.meta.env.VITE_API_URL
+                            }/pdf/${id}-1.pdf`}
+                            target="_blank"
+                            style={{ maxWidth: "max-content" }}
+                            className="cursor-pointer"
+                        >
+                            <FaRegFilePdf
+                                size={100}
+                                color="red"
+                                className="border p-3"
+                            />
+                        </a>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

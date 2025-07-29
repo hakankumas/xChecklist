@@ -64,12 +64,12 @@ exports.create = async (req, res) => {
                 for (const s2q of step2Questions[0]) {
                     await Answer.create_profile_questions({
                         profile_id: newDataId,
-                        question_id: s1q.id,
-                        question_name: s1q.name,
-                        selection: s1q.selection,
-                        selected: s1q.selected,
-                        note: s1q.note,
-                        rank: s1q.rank,
+                        question_id: s2q.id,
+                        question_name: s2q.name,
+                        selection: s2q.selection,
+                        selected: s2q.selected,
+                        note: s2q.note,
+                        rank: s2q.rank,
                     });
                 }
             } catch (error) {

@@ -22,17 +22,15 @@ function Logs({ id }) {
         >
             <div className="text-center fs-3 mb-3">Sistem Bildirimleri</div>
             {logs?.map((log) => (
-                <div className="alert alert-success py-1 px-2">
-                    <div key={log.id}>
-                        <small className="d-block text-start fst-italic fw-bold">
-                            {formatDate(log.createdAt)}
-                        </small>
-                        <div className="d-flex align-items-end gap-2">
-                            <span>
-                                <HiArrowTurnDownRight size={30} />
-                            </span>
-                            <div className="fs-6">{log.log}</div>
-                        </div>
+                <div key={log.id} className="alert alert-success py-1 px-2">
+                    <small className="d-block text-start fst-italic fw-bold">
+                        {formatDate(log.createdAt)}
+                    </small>
+                    <div className="d-flex align-items-end gap-2">
+                        <span>
+                            <HiArrowTurnDownRight size={30} />
+                        </span>
+                        <div className="fs-6">{log.log}</div>
                     </div>
                 </div>
             ))}

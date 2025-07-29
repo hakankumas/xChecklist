@@ -5,9 +5,7 @@ module.exports = class Profile {
         return connection.execute(`SELECT * FROM profiles `);
     }
     static getById(id) {
-        return connection.execute(`SELECT *  FROM profiles  WHERE id = ?`, [
-            id,
-        ]);
+        return connection.execute(`SELECT * FROM profiles WHERE id = ?`, [id]);
     }
     static create_profile(condition) {
         let { domain_name, google_account, email } = condition;

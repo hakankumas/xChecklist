@@ -41,7 +41,7 @@ function Step1Answer({ id }) {
                     <div className="shadow p-4 rounded-3 mb-3" key={answer.id}>
                         {/* Question */}
                         <div
-                            className="d-flex flex-row align-items-center gap-2 alert alert-primary___ mb-2 hv-shadow"
+                            className="d-flex flex-row align-items-center gap-2 alert alert-primary___ mb-2 hv-shadow cursor-pointer"
                             onDoubleClick={() =>
                                 setUpdateData({
                                     id: answer.id,
@@ -83,7 +83,7 @@ function Step1Answer({ id }) {
                         </div>
 
                         {/* Answer */}
-                        <div className="d-flex flex-row align-items-center gap-2 alert alert-success___ mb-2 hv-shadow">
+                        <div className="d-flex flex-row align-items-center gap-2 alert alert-success___ mb-2 hv-shadow cursor-pointer">
                             <FaCheckCircle size={30} className="col-1" />
                             {answer.selection &&
                                 JSON.parse(answer.selection).map(
@@ -116,7 +116,7 @@ function Step1Answer({ id }) {
 
                         {/* Note */}
                         <div
-                            className="d-flex flex-row align-items-center gap-2 alert alert-danger___ m-0 hv-shadow"
+                            className="d-flex flex-row align-items-center gap-2 alert alert-danger___ m-0 hv-shadow cursor-pointer"
                             onDoubleClick={() =>
                                 setUpdateData({
                                     id: answer.id,
