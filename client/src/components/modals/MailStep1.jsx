@@ -8,7 +8,7 @@ function MailStep1({ data }) {
     console.log("MailStep1 is worked.");
     const { snackBar_success, snackBar_error } = useCustomSnackBar();
 
-    const { id, domain_name, email } = data;
+    const { id, domain_name, email, pdf1 } = data;
     const [sendMailTemplate, setSendMailTemplate] = useState({
         profile_id: id,
         step_no: 1,
@@ -107,23 +107,27 @@ Detaylı bilgi almak için 0264 272 82 06 numaralı telefonu arayabilirsiniz.`,
                             }}
                         ></textarea>
                     </div>
-                    <div className="d-flex flex-column">
-                        <label className="form-label">Ön Analiz Raporu</label>
-                        <a
-                            href={`${
-                                import.meta.env.VITE_API_URL
-                            }/pdf/${id}-1.pdf`}
-                            target="_blank"
-                            style={{ maxWidth: "max-content" }}
-                            className="cursor-pointer"
-                        >
-                            <FaRegFilePdf
-                                size={100}
-                                color="red"
-                                className="border p-3"
-                            />
-                        </a>
-                    </div>
+                    {pdf1 && (
+                        <div className="d-flex flex-column">
+                            <label className="form-label">
+                                Ön Analiz Raporu
+                            </label>
+                            <a
+                                href={`${
+                                    import.meta.env.VITE_API_URL
+                                }/pdf/${pdf1}`}
+                                target="_blank"
+                                style={{ maxWidth: "max-content" }}
+                                className="cursor-pointer"
+                            >
+                                <FaRegFilePdf
+                                    size={100}
+                                    color="red"
+                                    className="border p-3"
+                                />
+                            </a>
+                        </div>
+                    )}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button

@@ -1,107 +1,142 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { FaUserPlus } from "react-icons/fa";
-// import axios from "axios";
+import { FaRegEnvelope, FaRegFilePdf } from "react-icons/fa";
+import axios from "axios";
 import { useCustomSnackBar } from "../../hooks/useCustomSnackBar";
-import { useDispatch } from "react-redux";
-import { createProfile } from "../../redux/features/profile/profileSlice";
-function MailStep2() {
+function MailStep2({ data }) {
     console.log("MailStep2 is worked.");
-    const dispatch = useDispatch();
     const { snackBar_success, snackBar_error } = useCustomSnackBar();
 
-    const [show, setShow] = useState(false);
-    const [newData, setNewData] = useState({
-        domain_name: "",
-        google_account: "",
-        email: "",
+    const { id, domain_name, email, pdf2 } = data;
+    const [sendMailTemplate, setSendMailTemplate] = useState({
+        profile_id: id,
+        step_no: 2,
+        email: email,
+        subject: `${domain_name} - Detaylı Analiz Raporu`,
+        message: `Değerli müşterimiz merhaba. 
+Web siteniz ${domain_name} için detaylı analiz işlemi gerçekleştirilmiştir. 
+Raporunuz ek olarak gönderilmiştir. 
+Detaylı bilgi almak için 0264 272 82 06 numaralı telefonu arayabilirsiniz.`,
     });
+
+    const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
     const handleClose = () => {
         setShow(false);
-        setNewData({
-            domain_name: "",
-            google_account: "",
-            email: "",
+        setSendMailTemplate({
+            profile_id: id,
+            step_no: 2,
+            email: email,
+            subject: `${domain_name} - Detaylı Analiz Raporu`,
+            message: `Değerli müşterimiz merhaba. 
+Web siteniz ${domain_name} için detaylı analiz işlemi gerçekleştirilmiştir. 
+Raporunuz ek olarak gönderilmiştir. 
+Detaylı bilgi almak için 0264 272 82 06 numaralı telefonu arayabilirsiniz.`,
         });
     };
-    const handleCreate = async () => {
-        if (newData.domain_name.trim() !== "") {
-            try {
-                dispatch(createProfile(newData));
-                snackBar_success();
-                handleClose();
-            } catch (error) {
-                console.error(error);
-                snackBar_error();
-            }
-        }
-    };
 
+    const handleSendMail = async () => {
+        try {
+            const response = await axios.post(
+                `${import.meta.env.VITE_API_URL}/mail/send`,
+                sendMailTemplate
+            );
+            snackBar_success();
+        } catch (error) {
+            console.error(error);
+            snackBar_error();
+        }
+        handleClose();
+    };
     return (
         <>
-            <Button variant="success btn-lg" onClick={handleShow}>
+            <Button
+                variant="outline-success btn-lg border-0"
+                onClick={handleShow}
+            >
                 <div className="d-flex align-items-center">
-                    <FaUserPlus size={30} />
+                    <FaRegEnvelope size={40} />
                 </div>
             </Button>
 
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Yeni Profil Oluştur</Modal.Title>
+            <Modal show={show} onHide={handleClose} className="modal-xl">
+                <Modal.Header closeButton className="mx-4">
+                    <Modal.Title>
+                        Detaylı Analiz Raporu - Mail Gönder
+                    </Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="mx-4">
                     <div className="mb-3">
-                        <label className="form-label">Domain Adresi</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            value={newData.domain_name}
-                            onChange={(e) =>
-                                setNewData({
-                                    ...newData,
-                                    domain_name: e.target.value,
-                                })
-                            }
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Google Hesabı</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            value={newData.google_account}
-                            onChange={(e) =>
-                                setNewData({
-                                    ...newData,
-                                    google_account: e.target.value,
-                                })
-                            }
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Email</label>
+                        <label className="form-label">Kime</label>
                         <input
                             type="email"
                             className="form-control"
-                            value={newData.email}
-                            onChange={(e) =>
-                                setNewData({
-                                    ...newData,
+                            value={sendMailTemplate.email}
+                            onChange={(e) => {
+                                setSendMailTemplate({
+                                    ...sendMailTemplate,
                                     email: e.target.value,
-                                })
-                            }
+                                });
+                            }}
                         />
                     </div>
+                    <div className="mb-3">
+                        <label className="form-label">Konu</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={sendMailTemplate.subject}
+                            onChange={(e) => {
+                                setSendMailTemplate({
+                                    ...sendMailTemplate,
+                                    subject: e.target.value,
+                                });
+                            }}
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Açıklama</label>
+                        <textarea
+                            className="form-control"
+                            rows="5"
+                            value={sendMailTemplate.message}
+                            onChange={(e) => {
+                                setSendMailTemplate({
+                                    ...sendMailTemplate,
+                                    message: e.target.value,
+                                });
+                            }}
+                        ></textarea>
+                    </div>
+                    {pdf2 && (
+                        <div className="d-flex flex-column">
+                            <label className="form-label">
+                                Detaylı Analiz Raporu
+                            </label>
+                            <a
+                                href={`${
+                                    import.meta.env.VITE_API_URL
+                                }/pdf/${pdf2}`}
+                                target="_blank"
+                                style={{ maxWidth: "max-content" }}
+                                className="cursor-pointer"
+                            >
+                                <FaRegFilePdf
+                                    size={100}
+                                    color="red"
+                                    className="border p-3"
+                                />
+                            </a>
+                        </div>
+                    )}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
-                        variant="success"
-                        onClick={handleCreate}
-                        disabled={!newData.domain_name.trim()}
+                        variant="success btn-lg"
+                        onClick={() => handleSendMail()}
                     >
-                        Tamam
+                        Gönder
                     </Button>
                 </Modal.Footer>
             </Modal>

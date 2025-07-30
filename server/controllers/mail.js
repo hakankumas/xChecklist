@@ -3,26 +3,31 @@ const Question = require("../models/Question");
 const Answer = require("../models/Answer");
 const Log = require("../models/Log");
 const Mail = require("../models/Mail");
+const send_mail = require("../utilities/mailer");
 
 exports.send = async (req, res) => {
     try {
+        await send_mail(req.body);
+        // Mail içeriği database'e kaydediliyor.
         const create_mail = await Mail.create(req.body);
         if (create_mail[0].affectedRows > 0) {
+            // Ön Analiz Raporu Log Kaydı
             if (req.body.step_no === 1) {
                 try {
                     await Log.create({
                         profile_id: req.body.profile_id,
-                        log: `Müşteriye Ön Analiz Raporu Maili Gönderildi.`,
+                        log: `Ön Analiz Raporu Maili Gönderildi.`,
                     });
                 } catch (error) {
                     console.error(error);
                 }
             }
+            // Detaylı Analiz Raporu Log Kaydı
             if (req.body.step_no === 2) {
                 try {
                     await Log.create({
                         profile_id: req.body.profile_id,
-                        log: `Müşteriye Detaylı Analiz Raporu Maili Gönderildi.`,
+                        log: `Detaylı Analiz Raporu Maili Gönderildi.`,
                     });
                 } catch (error) {
                     console.error(error);

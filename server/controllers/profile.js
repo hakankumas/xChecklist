@@ -36,7 +36,7 @@ exports.create = async (req, res) => {
             try {
                 await Log.create({
                     profile_id: newDataId,
-                    log: `Profil oluşturuldu.`,
+                    log: `Profil Oluşturuldu.`,
                 });
             } catch (error) {
                 console.error(error);
@@ -134,13 +134,13 @@ exports.stepno = async (req, res) => {
             if (req.body.step_no === 1) {
                 const isLogMessage = await Log.search({
                     profile_id: req.body.id,
-                    log: `Analiz Başlatıldı.`,
+                    log: `Ön Analiz İşlemleri Başlatıldı.`,
                 });
                 if (!isLogMessage[0].length > 0) {
                     try {
                         await Log.create({
                             profile_id: req.body.id,
-                            log: `Analiz Başlatıldı.`,
+                            log: `Ön Analiz İşlemleri Başlatıldı.`,
                         });
                     } catch (error) {
                         console.error(error);
@@ -150,13 +150,28 @@ exports.stepno = async (req, res) => {
             if (req.body.step_no === 2) {
                 const isLogMessage = await Log.search({
                     profile_id: req.body.id,
-                    log: `Ön Analiz Raporu Tamamlandı.`,
+                    log: `Ön Analiz İşlemleri Tamamlandı.`,
                 });
                 if (!isLogMessage[0].length > 0) {
                     try {
                         await Log.create({
                             profile_id: req.body.id,
-                            log: `Ön Analiz Raporu Tamamlandı.`,
+                            log: `Ön Analiz İşlemleri Tamamlandı.`,
+                        });
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+
+                const isLogMessage_2 = await Log.search({
+                    profile_id: req.body.id,
+                    log: `Detaylı Analiz İşlemleri Başlatıldı.`,
+                });
+                if (!isLogMessage_2[0].length > 0) {
+                    try {
+                        await Log.create({
+                            profile_id: req.body.id,
+                            log: `Detaylı Analiz İşlemleri Başlatıldı.`,
                         });
                     } catch (error) {
                         console.error(error);
@@ -166,13 +181,27 @@ exports.stepno = async (req, res) => {
             if (req.body.step_no === 3) {
                 const isLogMessage = await Log.search({
                     profile_id: req.body.id,
-                    log: `Detaylı Analiz Raporu Tamamlandı.`,
+                    log: `Detaylı Analiz İşlemleri Tamamlandı.`,
                 });
                 if (!isLogMessage[0].length > 0) {
                     try {
                         await Log.create({
                             profile_id: req.body.id,
-                            log: `Detaylı Analiz Raporu Tamamlandı.`,
+                            log: `Detaylı Analiz İşlemleri Tamamlandı.`,
+                        });
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+                const isLogMessage_completed = await Log.search({
+                    profile_id: req.body.id,
+                    log: `Tüm Analiz İşlemleri Tamamlandı.`,
+                });
+                if (!isLogMessage_completed[0].length > 0) {
+                    try {
+                        await Log.create({
+                            profile_id: req.body.id,
+                            log: `Tüm Analiz İşlemleri Tamamlandı.`,
                         });
                     } catch (error) {
                         console.error(error);

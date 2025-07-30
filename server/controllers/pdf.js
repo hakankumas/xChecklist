@@ -15,7 +15,7 @@ exports.update = async (req, res) => {
             profile_id: req.body.profile_id,
             rank: req.body.step_no,
         };
-        const questions = await Answer.getAll_rank(condition);
+        const questions = await Answer.getAll_rank_pdf(condition);
 
         const fileName = `${req.body.profile_id}-${req.body.step_no}.pdf`;
         await generatePDF(
@@ -23,6 +23,30 @@ exports.update = async (req, res) => {
             questions[0],
             fileName
         );
+
+        // Ön Analiz Raporu - PDF Log
+        if (req.body.step_no === 1) {
+            try {
+                await Log.create({
+                    profile_id: req.body.profile_id,
+                    log: `Ön Analiz Raporu İçin PDF Oluşturuldu.`,
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // Detaylı Analiz Raporu - PDF Log
+        if (req.body.step_no === 2) {
+            try {
+                await Log.create({
+                    profile_id: req.body.profile_id,
+                    log: `Detaylı Analiz Raporu İçin PDF Oluşturuldu.`,
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
 
         // Profilin pdf alanını günceller
         const updated_pdf = await Pdf.update({ ...req.body, path: fileName });

@@ -12,7 +12,7 @@ function Step2QueriesSelected({ id }) {
     const dispatch = useDispatch();
     const { answers2 } = useSelector((state) => state.answer);
     useEffect(() => {
-        dispatch(getall_answer2({ profile_id: id }));
+        dispatch(getall_answer2({ profile_id: id, rank: 2 }));
     }, [dispatch, id]);
 
     const handleDeleteList = async (answer) => {
@@ -33,20 +33,14 @@ function Step2QueriesSelected({ id }) {
                 Detaylı Analiz Raporu Soruları
             </div>
             {answers2.length > 0 &&
-                answers2.map((answer2) => (
+                answers2.map((answer) => (
                     <div
-                        key={answer2.id}
+                        key={answer.id}
                         className="border q-unselect px-3 pt-2"
                         title="Kaldır"
-                        onClick={() => handleDeleteList(answer2)}
+                        onClick={() => handleDeleteList(answer)}
                     >
-                        <p className="mb-2">{answer2.question_name}</p>
-                        <small
-                            className="d-flex mb-2"
-                            style={{ fontWeight: "bold", fontStyle: "italic" }}
-                        >
-                            Not: {answer2.note}
-                        </small>
+                        <p className="mb-2">{answer.question_name}</p>
                     </div>
                 ))}
         </div>

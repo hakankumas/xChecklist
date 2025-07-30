@@ -1,4 +1,4 @@
-function formatDate(createdAt) {
+function format_date(createdAt) {
     return new Date(createdAt).toLocaleString("tr-TR", {
         year: "numeric",
         month: "short",
@@ -8,4 +8,4 @@ function formatDate(createdAt) {
     });
 }
 
-export default formatDate;
+export default format_date;

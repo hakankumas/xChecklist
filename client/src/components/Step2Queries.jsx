@@ -18,6 +18,8 @@ function Step2Queries({ id }) {
                 profile_id: id,
                 question_id: question.id,
                 question_name: question.name,
+                selection: question.selection,
+                selected: question.selected,
                 note: question.note,
                 rank: 2,
             };
@@ -49,12 +51,6 @@ function Step2Queries({ id }) {
                         onClick={() => handleCreate(question)}
                     >
                         <p className="mb-2">{question.name}</p>
-                        <small
-                            className="d-flex mb-2"
-                            style={{ fontWeight: "bold", fontStyle: "italic" }}
-                        >
-                            Not: {question.note}
-                        </small>
                     </div>
                 ))
             ) : (

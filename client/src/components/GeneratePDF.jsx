@@ -2,6 +2,7 @@ import { FaRegFilePdf } from "react-icons/fa";
 import axios from "axios";
 import { useCustomSnackBar } from "../hooks/useCustomSnackBar";
 function GeneratePDF({ data }) {
+    console.log(data);
     const { snackBar_success, snackBar_error } = useCustomSnackBar();
     const handleGenerate = async (profile_id, step_no) => {
         try {

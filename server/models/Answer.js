@@ -49,6 +49,30 @@ module.exports = class Answer {
             [profile_id, rank]
         );
     }
+    static getAll_rank_pdf(condition) {
+        const { profile_id, rank } = condition;
+        if (rank === 1) {
+            return connection.execute(
+                `
+                SELECT * 
+                FROM answers 
+                WHERE profile_id = ? AND rank = 1
+                `,
+                [profile_id]
+            );
+        }
+        if (rank === 2) {
+            return connection.execute(
+                `
+                SELECT * 
+                FROM answers 
+                WHERE profile_id = ?
+                ORDER BY rank ASC, id ASC
+                `,
+                [profile_id]
+            );
+        }
+    }
     static getById(id) {
         return connection.execute(
             `

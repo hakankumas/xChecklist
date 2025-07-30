@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { HiArrowTurnDownRight } from "react-icons/hi2";
-import formatDate from "../hooks/useDateReturn";
+import format_date from "../functions/format_date";
 
 function Logs({ id }) {
     console.log("Logs worked.");
@@ -24,7 +24,7 @@ function Logs({ id }) {
             {logs?.map((log) => (
                 <div key={log.id} className="alert alert-success py-1 px-2">
                     <small className="d-block text-start fst-italic fw-bold">
-                        {formatDate(log.createdAt)}
+                        {format_date(log.createdAt)}
                     </small>
                     <div className="d-flex align-items-end gap-2">
                         <span>
